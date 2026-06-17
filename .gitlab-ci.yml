@@ -1,0 +1,21 @@
+image: rust:1.92
+
+stages:
+  - lint
+  - test
+
+cache:
+  paths:
+    - .cargo/
+    - target/
+
+format_check:
+  stage: lint
+  script:
+    - rustup component add rustfmt
+    - cargo fmt --all -- --check
+
+test_build:
+  stage: test
+  script:
+    - cargo test --all
