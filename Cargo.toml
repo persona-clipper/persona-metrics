@@ -1,0 +1,22 @@
+[workspace.package]
+name = "paas-rs"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [
+    "agent-rs",
+    "master-app",
+    "core-library"
+]
+resolver = "2"
+
+[workspace.dependencies]
+paas-core = { path = "./core-library" }
+axum = { version = "0.8.9", features = ["multipart", "ws"] }
+askama = { version = "0.16.0", features = ["default"] }
+tokio = { version = "1.52.2", features = ["full"] }
+
+sysinfo = { version = "0.39.3" }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
