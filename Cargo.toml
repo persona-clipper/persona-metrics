@@ -5,18 +5,43 @@ edition = "2024"
 
 [workspace]
 members = [
-    "agent-rs",
+    "persona-exporter",
     "master-app",
-    "core-library"
-]
+    "core-library",
+    "master-api-app"
+, "persona-exporter-types"]
 resolver = "2"
 
 [workspace.dependencies]
-paas-core = { path = "./core-library" }
-axum = { version = "0.8.9", features = ["multipart", "ws"] }
-askama = { version = "0.16.0", features = ["default"] }
-tokio = { version = "1.52.2", features = ["full"] }
+# Ядро и Архитектура
+paas-core = { path = "./core-library" } # Общая внутренняя библиотека проекта
 
-sysinfo = { version = "0.39.3" }
-tracing = "0.1.44"
-tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+# Асинхронность и Логирование
+tokio = { version = "1.52.2", features = ["full"] }                   # Асинхронность
+tracing = "0.1.44"                                                    # Логирование
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] } # Фильтрация логов (info, error, warn и т.д.)
+
+# Сеть и Веб-сервер
+axum = { version = "0.8.9", features = ["multipart", "ws"] } # Веб-фреймворк
+reqwest = { version = "0.13.4", default-features = false, features = ["json", "rustls"]}                              # Послание запросов на указанных URL
+askama = { version = "0.16.0", features = ["default"] }      # HTML-шаблонизатор
+
+# Базы данных и Модели
+sqlx = { version = "0.9.0" } # Работа с БД
+porm = { version = "0.1.0" } # ORM-прослойка для удобного управления таблицами БД
+
+# Сбор системных данных
+sysinfo = { version = "0.39.3" } # Доступ к датчикам ОС: загрузка CPU, память, диски и сеть
+
+# Работа с Конфигами и JSON
+config = { version = "0.15.24", features = ["toml"] }         # Чтение настроек из config.toml на диске
+serde = { version = "1.0.228", features = ["derive"]}         # Главный сериализатор (переводчик структур в байты)
+serde_json = { version = "1.0.150"}                           # Переводчик данных строго в формат JSON
+
+[profile.release]
+opt-level = "s"
+debug = false
+codegen-units = 1
+lto = true
+strip = true
+panic = "abort"

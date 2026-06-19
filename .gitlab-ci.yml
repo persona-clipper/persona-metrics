@@ -13,9 +13,15 @@ format_check:
   stage: lint
   script:
     - rustup component add rustfmt
-    - cargo fmt --all -- --check
+    - cargo fmt --all -- --check --format=short
 
 test_build:
   stage: test
+  before_script:
+    - cargo install cargo2junit || true
   script:
-    - cargo test --all
+    - cargo test --all -- --format=json | cargo2junit > report.xml
+  artifacts:
+    expire_in: 1 week
+    reports:
+      junit: report.xml
