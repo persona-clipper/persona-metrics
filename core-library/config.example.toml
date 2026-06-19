@@ -1,0 +1,6 @@
+[agent]
+send_metrics_interval = 5.0
+
+[server]
+server_key = "your_generated_token"
+server_url = "http://persona-rs.com/metrics"
