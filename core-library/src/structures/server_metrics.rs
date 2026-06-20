@@ -1,16 +1,11 @@
 use std::path::Path;
 use sysinfo::{System, Disks, Networks, Disk, Components, LoadAvg};
-
-#[derive(Debug)]
-pub struct ServerMetrics {
-    pub sys_info: SystemInfo,
-    pub disk_info: DiskInfo,
-    pub network_data: NetworkInfo,
-    pub timestamp: u64,
+use persona_exporter_types::*;
+pub trait MetricsCollector {
+    fn collect_system_metrics(sys: &mut System) -> SystemInfo;
 }
-
-impl ServerMetrics {
-    pub fn collect_system_metrics(sys: &mut System) -> SystemInfo {
+impl MetricsCollector for ServerMetrics {
+    fn collect_system_metrics(sys: &mut System) -> SystemInfo {
         sys.refresh_all();
 
         let total_memory = sys.total_memory();
@@ -22,7 +17,11 @@ impl ServerMetrics {
         let threads = System::physical_core_count().unwrap_or(total_cores);
 
         let load_avg = System::load_average();
-
+        let load_avg = LoadAverage {
+            one: load_avg.one,
+            five: load_avg.five,
+            fifteen: load_avg.fifteen,
+        };
         SystemInfo {
             total_memory,
             used_memory,
@@ -31,7 +30,7 @@ impl ServerMetrics {
             cpu_usage: sys.global_cpu_usage(),
             physical_cpus_count: total_cores,
             threads,
-            load_average: [load_avg.one, load_avg.five, load_avg.fifteen],
+            load_average: load_avg,
         }
     }
 
@@ -50,7 +49,10 @@ impl ServerMetrics {
             }
         }
 
-        DiskInfo { ..Default::default() }
+        DiskInfo {
+            total_space: 0,
+            available_space: 0,
+        }
     }
 
     pub fn collect_network_metrics(networks: &mut Networks) -> NetworkInfo {
@@ -92,37 +94,37 @@ impl ServerMetrics {
     }
 }
 
-#[derive(Debug, Default)]
-pub struct SystemInfo {
-    pub total_memory: u64,
-    pub used_memory: u64,
-    pub total_swap: u64,
-    pub used_swap: u64,
-    pub cpu_usage: f32,
-    pub physical_cpus_count: usize,
-    pub threads: usize,
-    pub load_average: [f64; 3],
-}
-
-#[derive(Debug, Default)]
-pub struct DiskInfo {
-    pub total_space: u64,
-    pub available_space: u64,
-}
-
-#[derive(Debug, Default)]
-pub struct NetworkInfo {
-    pub interface_name: String,
-
-    pub total_rx_bytes: u64,
-    pub total_tx_bytes: u64,
-    pub total_rx_package: u64,
-    pub total_tx_package: u64,
-    pub total_rx_errors: u64,
-    pub total_tx_errors: u64
-}
-
-#[derive(Debug, Default)]
-pub struct ComponentInfo {
-
-}
+// #[derive(Debug, Default)]
+// pub struct SystemInfo {
+//     pub total_memory: u64,
+//     pub used_memory: u64,
+//     pub total_swap: u64,
+//     pub used_swap: u64,
+//     pub cpu_usage: f32,
+//     pub physical_cpus_count: usize,
+//     pub threads: usize,
+//     pub load_average: [f64; 3],
+// }
+//
+// #[derive(Debug, Default)]
+// pub struct DiskInfo {
+//     pub total_space: u64,
+//     pub available_space: u64,
+// }
+//
+// #[derive(Debug, Default)]
+// pub struct NetworkInfo {
+//     pub interface_name: String,
+//
+//     pub total_rx_bytes: u64,
+//     pub total_tx_bytes: u64,
+//     pub total_rx_package: u64,
+//     pub total_tx_package: u64,
+//     pub total_rx_errors: u64,
+//     pub total_tx_errors: u64
+// }
+//
+// #[derive(Debug, Default)]
+// pub struct ComponentInfo {
+//
+// }

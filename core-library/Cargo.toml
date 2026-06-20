@@ -8,3 +8,5 @@ sysinfo = { workspace = true }
 serde = { workspace = true }
 serde_json =  { workspace = true }
 config = { workspace = true }
+#persona-exporter-types = "0.1.0"
+persona-exporter-types = { path = "../persona-exporter-types" }

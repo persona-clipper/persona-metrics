@@ -5,11 +5,12 @@ edition = "2024"
 
 [workspace]
 members = [
-    "persona-exporter",
+    "persona-exporter-util",
     "master-app",
     "core-library",
-    "master-api-app"
-, "persona-exporter-types"]
+    "master-api-app",
+    "persona-exporter-types",
+]
 resolver = "2"
 
 [workspace.dependencies]
