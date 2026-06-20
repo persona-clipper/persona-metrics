@@ -1558,7 +1558,7 @@ name = "paas-core"
 version = "0.1.0"
 dependencies = [
  "config",
- "persona-exporter-types",
+ "persona-exporter-types 0.1.4",
  "serde",
  "serde_json",
  "sysinfo",
@@ -1607,11 +1607,10 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 
 [[package]]
 name = "persona-exporter"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "config",
- "paas-core",
- "persona-exporter-types",
+ "persona-exporter-types 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "postcard",
  "procfs",
  "reqwest",
@@ -1624,7 +1623,16 @@ dependencies = [
 
 [[package]]
 name = "persona-exporter-types"
-version = "0.1.2"
+version = "0.1.4"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "persona-exporter-types"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ee12cb3c046185f149c7f86062640dca589b1cc011728fed5e651f99568d06c"
 dependencies = [
  "serde",
 ]
