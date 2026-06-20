@@ -1524,6 +1524,7 @@ name = "persona-exporter"
 version = "0.1.0"
 dependencies = [
  "paas-core",
+ "persona-exporter-types 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "postcard",
  "reqwest",
  "sysinfo",
@@ -1536,7 +1537,16 @@ dependencies = [
 name = "persona-exporter-types"
 version = "0.1.0"
 dependencies = [
- "sysinfo",
+ "serde",
+]
+
+[[package]]
+name = "persona-exporter-types"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57f31ddcb3da4684eb8b0140ca25592cfa8da9a38868f03c18f8a909a70fd32f"
+dependencies = [
+ "serde",
 ]
 
 [[package]]
