@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: 0DoubleDare/persona-exporter/.github/workflows/checkout_and_install.yml@main
         with:
-          build_target: ${{ matrix.target }}
+          target: ${{ matrix.target }}
 #      - name: Checkout code
 #        uses: actions/checkout@v4
 #
