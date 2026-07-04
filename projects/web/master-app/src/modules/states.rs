@@ -1,6 +1,5 @@
-
 pub struct AppState {
-    pub api_url: String
+    pub api_url: String,
 }
 
 impl AppState {

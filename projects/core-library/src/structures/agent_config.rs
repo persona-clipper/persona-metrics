@@ -1,7 +1,7 @@
-use std::env;
-use std::path::PathBuf;
 use config::{Config, ConfigError, File};
 use serde::Deserialize;
+use std::env;
+use std::path::PathBuf;
 // use crate::structures::server_metrics::ServerMetrics;
 
 #[derive(Deserialize, Debug)]
@@ -19,24 +19,16 @@ pub struct MetricsConfig {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct CpuConfig {
-
-}
+pub struct CpuConfig {}
 
 #[derive(Deserialize, Debug)]
-pub struct DisksConfig {
-
-}
+pub struct DisksConfig {}
 
 #[derive(Deserialize, Debug)]
-pub struct NetworkConfig {
-
-}
+pub struct NetworkConfig {}
 
 #[derive(Deserialize, Debug)]
-pub struct SystemConfig {
-
-}
+pub struct SystemConfig {}
 #[derive(Deserialize, Debug)]
 pub struct AgentSection {
     pub send_metrics_interval: u64,
@@ -57,11 +49,11 @@ impl AgentConfigFile {
             .unwrap_or_else(|_| PathBuf::from("/etc/persona-rs-agent/config.toml"));
 
         if !config_path.exists() {
-           if let Some(parent) = config_path.parent() {
-               std::fs::create_dir_all(parent).map_err(|e| {
-                   ConfigError::Message("Не удалось создать директорию".to_string())
-               })?;
-           }
+            if let Some(parent) = config_path.parent() {
+                std::fs::create_dir_all(parent).map_err(|e| {
+                    ConfigError::Message("Не удалось создать директорию".to_string())
+                })?;
+            }
 
             std::fs::write(&config_path, DEFAULT_CONFIG_CONTENT).map_err(|e| {
                 ConfigError::Message("Не удалось заполнить конфиг данными по умолчанию".to_string())

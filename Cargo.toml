@@ -1,21 +1,25 @@
 [workspace.package]
-name = "paas-rs"
+name = "persona-rs"
 version = "0.1.0"
 edition = "2024"
 
 [workspace]
 members = [
-    "persona-exporter-util",
-    "master-app",
-    "core-library",
-    "master-api-app",
-    "persona-exporter-types",
+    "projects/persona-exporter-util",
+    "projects/web/master-app",
+    "projects/core-library",
+    "projects/web/master-api-app",
+    "projects/persona-exporter-types",
+]
+exclude = [
+#    "projects/persona-exporter-types",
+#    "projects/persona-exporter-util"
 ]
 resolver = "2"
 
 [workspace.dependencies]
 # Ядро и Архитектура
-paas-core = { path = "./core-library" } # Общая внутренняя библиотека проекта
+paas-core = { path = "projects/core-library" } # Общая внутренняя библиотека проекта
 
 # Асинхронность и Логирование
 tokio = { version = "1.52.2", features = ["full"] }                   # Асинхронность
@@ -24,11 +28,13 @@ tracing-subscriber = { version = "0.3.23", features = ["env-filter"] } # Фил�
 
 # Сеть и Веб-сервер
 axum = { version = "0.8.9", features = ["multipart", "ws"] } # Веб-фреймворк
+axum-extra = { version = "0.12.6", features = ["typed-header"]}
+headers = "0.4.1"
 reqwest = { version = "0.13.4", default-features = false, features = ["json", "rustls"]}                              # Послание запросов на указанных URL
 askama = { version = "0.16.0", features = ["default"] }      # HTML-шаблонизатор
 
 # Базы данных и Модели
-sqlx = { version = "0.9.0" } # Работа с БД
+sqlx = { version = "0.9.0", features = ["postgres"] } # Работа с БД
 porm = { version = "0.1.0" } # ORM-прослойка для удобного управления таблицами БД
 
 # Сбор системных данных

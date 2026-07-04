@@ -17,6 +17,7 @@ format_check:
 
 test_build:
   stage: test
+  needs: [ format_check ]
   before_script:
     - cargo install cargo2junit || true
   script:
