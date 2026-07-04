@@ -1,6 +1,6 @@
 [submodule "persona-exporter-types"]
-	path = projects/persona-exporter-types
+	path = ./projects/persona-exporter-types
 	url = git@github.com:0DoubleDare/persona-exporter-types.git
 [submodule "persona-exporter-util"]
-	path = projects/persona-exporter-util
+	path = ./projects/persona-exporter-util
 	url = git@github.com:0DoubleDare/persona-exporter.git
