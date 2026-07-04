@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: 0DoubleDare/persona-exporter/.github/workflows/checkout_and_install.yml@main
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@stable
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Install toolchain
+#        uses: dtolnay/rust-toolchain@stable
 
       - name: Test fmt
         run: |
@@ -57,13 +57,16 @@ jobs:
             artifact_name: persona-exporter.exe
             asset_name: persona-exporter-windows.zip
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - uses: 0DoubleDare/persona-exporter/.github/workflows/checkout_and_install.yml@main
         with:
-          target: ${{ matrix.target }}
+          build_target: ${{ matrix.target }}
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Install toolchain
+#        uses: dtolnay/rust-toolchain@stable
+#        with:
+#          target: ${{ matrix.target }}
         
       - name: Build project
         run: cargo build --release --target ${{ matrix.target }}
