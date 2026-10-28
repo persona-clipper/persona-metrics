@@ -5,5 +5,5 @@
     path = projects/persona-exporter/persona-exporter-types
 	url = git@github.com:persona-clipper/persona-exporter-types.git
 [submodule "persona-exporter-documentation"]
-	path = project/persona-exporter/persona-exporter-documentation
+	path = projects/persona-exporter/persona-exporter-documentation
 	url = git@github.com:persona-clipper/persona-exporter-docs.git
