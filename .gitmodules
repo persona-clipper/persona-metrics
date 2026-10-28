@@ -1,9 +1,9 @@
 [submodule "persona-exporter-util"]
 	path = projects/persona-exporter/persona-exporter-util
-	url = git@github.com:0DoubleDare/persona-exporter.git
+	url = git@github.com:persona-clipper/persona-exporter.git
 [submodule "persona-exporter-types"]
     path = projects/persona-exporter/persona-exporter-types
-	url = git@github.com:0DoubleDare/persona-exporter-types.git
+	url = git@github.com:persona-clipper/persona-exporter-types.git
 [submodule "persona-exporter-documentation"]
 	path = project/persona-exporter/persona-exporter-documentation
 	url = git@github.com:persona-clipper/persona-exporter-docs.git
