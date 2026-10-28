@@ -1,0 +1,4 @@
+[askama-lsp]
+templates = ["./projects/web/master-app/templates"]
+templates_extensions = ["html", "askama", "j2"]
+source_directories = ["./projects/web/master-app/src"]

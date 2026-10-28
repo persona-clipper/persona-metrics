@@ -1,0 +1,4 @@
+[askama-lsp]
+templates = ["./templates"]
+templates_extensions = ["html", "askama", "j2"]
+source_directories = ["./src"]

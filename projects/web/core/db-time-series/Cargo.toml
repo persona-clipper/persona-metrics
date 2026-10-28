@@ -1,0 +1,9 @@
+[package]
+name = "core-library-db-time-series"
+description = "A crate with types for the VictoriaMetrics time-series database"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true }

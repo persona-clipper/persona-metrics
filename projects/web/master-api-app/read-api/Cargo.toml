@@ -1,0 +1,11 @@
+[package]
+name = "api-read-side"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+core-library-db = { workspace = true }
+core-library-tsdb = { workspace = true }

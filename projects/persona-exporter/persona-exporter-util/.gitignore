@@ -1,0 +1,11 @@
+/target/
+
+/.idea
+/debian/usr/bin/*
+
+/result
+
+/perf.data
+/perf.data.old
+/profile.json.gz
+/flamegraph.svg
