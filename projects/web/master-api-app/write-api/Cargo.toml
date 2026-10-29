@@ -1,5 +1,5 @@
 [package]
-name = "api-write-side"
+name = "api_write_side"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,10 +7,13 @@ authors.workspace = true
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
-core-library-db = { workspace = true }
+core-library-db-queries = { workspace = true }
+core-library-db-types = { workspace = true }
 core-library-tsdb = { workspace = true }
 axum = { workspace = true }
 tokio = { workspace = true }
+sqlx = { workspace = true }
+dotenvy = { workspace = true }
 
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
