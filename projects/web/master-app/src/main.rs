@@ -20,8 +20,8 @@ async fn main() {
 
 #[derive(Template)]
 #[template(path = "index.html")]
-pub struct Ochko {
-    age: String,
-    name: String,
-    users: Vec<String>,
+pub struct Piroska {
+    pub age: String,
+    pub name: String,
+    pub users: Vec<String>,
 }
