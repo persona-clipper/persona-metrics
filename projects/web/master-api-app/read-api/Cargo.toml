@@ -12,6 +12,8 @@ core-library-db-types = { workspace = true }
 core-library-tsdb = { workspace = true }
 axum = { workspace = true }
 tokio = { workspace = true }
+dotenvy = { workspace = true }
+sqlx = { workspace = true }
 
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
