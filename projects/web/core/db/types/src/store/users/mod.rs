@@ -1,4 +1,5 @@
 use chrono::{TimeZone, Utc};
+use compact_str::CompactString;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, Type};
 
@@ -14,8 +15,8 @@ pub enum UserRole {
 #[derive(FromRow, Serialize, Deserialize)]
 pub struct User {
     pub id: i64,
-    pub display_name: String,
-    pub username: String,
+    pub display_name: CompactString,
+    pub username: CompactString,
     pub email: String,
     pub password_hash: String,
     pub role: UserRole,

@@ -32,8 +32,11 @@ pub async fn get_user_by_id(
         Ok(user) => {
             (StatusCode::OK, Json(user)).into_response()
         },
+        Err(sqlx::Error::RowNotFound) => {
+            (StatusCode::NOT_FOUND, "User not found").into_response()
+        },
         Err(e) => {
-            (StatusCode::NOT_FOUND, format!("Пользователь не найден: {e}")).into_response()
+            (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response()
         }
     }
 }
