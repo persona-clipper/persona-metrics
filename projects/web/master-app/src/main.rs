@@ -2,7 +2,7 @@ use askama::Template;
 use axum::Router;
 use axum::routing::get;
 use tower_http::services::ServeDir;
-use master_app::handlers::main_page::get_main_page_handler;
+use master_app::handlers::main_page::{get_main_page_handler, get_registration_form_handler};
 use master_app::modules::states::AppState;
 
 #[tokio::main]
@@ -16,6 +16,7 @@ async fn main() {
 
     let app: Router = Router::new()
         .route("/", get(get_main_page_handler))
+        .route("/users", get(get_registration_form_handler))
         .nest_service("/static", ServeDir::new("static"))
         .with_state(state);
 

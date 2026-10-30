@@ -11,12 +11,12 @@ html {
     font-family: "Inter Medium", serif;
 }
 
-main {
-    display: flex;
-    overflow: hidden;
+/*main {*/
+/*    display: flex;*/
+/*    overflow: hidden;*/
 
-    .sidebar {
-        display: flex;
-        flex-direction: column;
-    }
-}
+/*    .sidebar {*/
+/*        display: flex;*/
+/*        flex-direction: column;*/
+/*    }*/
+/*}*/
