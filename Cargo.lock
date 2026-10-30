@@ -854,15 +854,7 @@ name = "core-library-db-types"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "serde",
- "sqlx",
-]
-
-[[package]]
-name = "core-library-types"
-version = "0.1.0"
-dependencies = [
- "chrono",
+ "compact_str",
  "serde",
  "sqlx",
 ]
