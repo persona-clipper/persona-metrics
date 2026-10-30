@@ -1,9 +1,0 @@
-[package]
-name = "core-library-db"
-description = "Crate with types for a database (PostgreSQL)"
-version.workspace = true
-edition.workspace = true
-authors.workspace = true
-
-[dependencies]
-serde = { workspace = true }

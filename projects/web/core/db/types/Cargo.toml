@@ -1,0 +1,11 @@
+[package]
+name = "core-library-db-types"
+description = "A helper crate for working with database types. The crate contains structures for SQL queries (Users, Roles, etc.)."
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+sqlx = { workspace = true }
+chrono = { workspace = true }
+compact_str = { workspace = true }

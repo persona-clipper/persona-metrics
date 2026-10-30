@@ -1,0 +1,13 @@
+[package]
+name = "core-library-db-queries"
+description = "A helper crate for handling database queries. It stores database migrations."
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+sqlx = { workspace = true }
+dotenvy = { workspace = true }
+axum = { workspace = true }
+core-library-db-types = { workspace = true }

@@ -9,27 +9,30 @@ members = [
     # "projects/persona-exporter/persona-exporter-documentation",
     "projects/persona-exporter/persona-exporter-util",
     "projects/persona-exporter/persona-exporter-types",
+
     "projects/web/master-app",
-    "projects/web/core/db",
-    "projects/web/core/types",
     "projects/web/master-api-app/read-api",
     "projects/web/master-api-app/write-api",
     "projects/web/core/db-time-series",
+    "projects/web/core/db/types",
+    "projects/web/core/db/queries",
+#    "projects/web/core/types",
 ]
 exclude = [
     #    "projects/persona-exporter-types",
-        "projects/persona-exporter/persona-exporter-util"
+#        "projects/persona-exporter/persona-exporter-util"
 ]
 resolver = "2"
 
 [workspace.dependencies]
 # lints libraries
 ## A local crate for working with database structures (PostgreSQL)
-core-library-db = { path = "./projects/web/core/db" }
+core-library-db-types = { path = "./projects/web/core/db/types" }
+core-library-db-queries = { path = "./projects/web/core/db/queries" }
 ## A local crate for working with time series database functions & structures (Victoria Metrics)
 core-library-tsdb = { path = "./projects/web/core/db-time-series", package = "core-library-db-time-series" }
 ## A local crate for working with data structures for the main web application
-local-core-types = { path = "./projects/web/core/types" }
+#local-core-types = { path = "./projects/web/core/types" }
 ## A dedicated crate containing data types for persona-exporter
 ## (https://github.com/persona-clipper/persona-exporter)
 persona-exporter-types = { version = "3.0.0", features = ["full"] }
@@ -47,8 +50,10 @@ axum = { version = "0.8.9", features = ["multipart", "ws"] }
 reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls"] }
 askama = { version = "0.16.1", features = ["serde_json"] }
 askama_web = { version = "0.16.0", features = ["axum-0.8"] }
+tower-http = { version = "0.7.1", features = ["fs"] }
 
-sqlx = { version = "0.9.0", features = ["postgres"] }
+sqlx = { version = "0.9.0", features = ["postgres", "runtime-tokio", "time", "chrono", "sqlx-toml"] }
+chrono = { version = "0.4.45", features = ["default", "serde"] }
 
 # Working with serialization and deserialization
 config = { version = "0.15.27", features = ["toml"] }
@@ -56,8 +61,9 @@ serde = { version = "1.0.229", features = ["derive"] }
 serde_json = { version = "1.0.154" }
 
 # Optimizations
-compact_str = "0.10.0"
-smallvec = "1.16.4"
+compact_str = { version = "0.10.0", features = ["serde"]}
+smallvec = { version = "1.16.2", features = ["serde"]}
+dotenvy = "0.15.7"
 
 [profile.release]
 opt-level = "s"
