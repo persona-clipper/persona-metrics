@@ -2,7 +2,7 @@ use axum::extract::State;
 use axum::http::StatusCode;
 use axum::Json;
 use axum::response::IntoResponse;
-use core_library_db_queries::write::users::insert_user;
+use core_library_db_queries::write::users::insert_user_query;
 use core_library_db_types::state::{ApiErrorResponse, ApiErrorCode};
 use core_library_db_types::store::users::password::{Password, PasswordError};
 use core_library_db_types::store::users::user::CreateUserRow;
@@ -42,8 +42,8 @@ pub async fn create_user_handler(
         display_name: form.display_name,
         email: form.email,
     };
-    match insert_user(request, state.db.clone()).await {
-        Ok(id) => (StatusCode::CREATED, Json(id)).into_response(),
+    match insert_user_query(request, state.db.clone()).await {
+        Ok(response) => (StatusCode::CREATED, Json(response)).into_response(),
         Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(err.to_string())).into_response(),
     }
     // let response = insert_user().await;

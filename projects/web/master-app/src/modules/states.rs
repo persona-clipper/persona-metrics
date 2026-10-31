@@ -17,7 +17,7 @@ impl AppState {
                 read_url: "http://localhost:1313".to_string(),
                 write_url: "http://localhost:1212".to_string(),
             },
-            http_client: Default::default(),
+            http_client: reqwest::Client::new(),
         }
     }
 }

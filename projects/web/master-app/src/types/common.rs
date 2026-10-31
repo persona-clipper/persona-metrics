@@ -3,8 +3,10 @@ use axum::body::Body;
 use axum::http::{Response, StatusCode};
 use axum::response::{Html, IntoResponse};
 
+#[derive(Default)]
 pub struct PageMeta<'a> {
     pub title: &'a str,
+    pub description: Option<&'a str>
 }
 
 #[derive(Template)]

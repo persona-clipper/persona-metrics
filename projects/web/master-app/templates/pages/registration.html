@@ -1,5 +1,24 @@
 
-<form action="/users">
-  <input type="text" name="" maxlength="255" placeholder="Введите имя">
+<div class="signup-container">
+  <form action="/signup" class="signup-form" method="post">
+    <h2>Регистрация</h2>
+    <div class="form-input">
+      <label for="username">Введите юзернейи</label>
+      <input type="text" id="username" name="username" maxlength="255" placeholder="Введите свой юзернейм">
+    </div>
 
-</form>
+    <div class="form-input">
+      <label for="password">Введите пароль</label>
+      <input type="text" id="password" name="password" placeholder="Введите пароль">
+    </div>
+
+    <div class="form-input">
+      <label for="password_confirm">Повторите пароль</label>
+      <input type="text" id="password_confirm" name="password_confirm" placeholder="Повторите пароль">
+    </div>
+
+    <button type="submit">Зарегистрироваться</button>
+
+    <p class="login-link"><a href="/">Есть аккаунт? Войти</a></p>
+  </form>
+</div>

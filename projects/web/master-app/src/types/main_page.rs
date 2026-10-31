@@ -11,4 +11,8 @@ pub struct MainPage {
 
 #[derive(Template, WebTemplate)]
 #[template(path = "pages/registration.html")]
-pub struct RegistationForm;
+pub struct RegistrationForm;
+
+#[derive(Template, WebTemplate)]
+#[template(path = "pages/physic_ball.html")]
+pub struct PhycisBallPage;

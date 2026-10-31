@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бесконечный мяч с идеальной физикой</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #1a1a1a;
+      overflow: hidden;
+    }
+
+    .ball {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      transform: scale(20.0);
+      border-radius: 50%;
+      object-fit: cover;
+
+      /* Полная защита от любых взаимодействий мышкой */
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+
+      /* Смещаем точку трансформации в центр для корректного вращения */
+      transform-origin: center center;
+    }
+  </style>
+</head>
+<body>
+
+<img src="/static/assets/main_logo_transparent.png" alt="Мяч" class="ball" id="ball">
+
+<script>
+  const ball = document.getElementById('ball');
+
+  // НАСТРОЙКИ ФИЗИКИ
+  const gravity = 0.4;      // Сила гравитации (ускорение вниз)
+  const bounce = 1.0;       // Идеальный отскок (1.0 = энергия не теряется, прыгает вечно)
+  const frictionX = 1.0;    // Трение воздуха по горизонтали (1.0 = нет сопротивления воздуха)
+
+  // Начальное состояние (координаты и скорость)
+  let x = 100;              // Стартовая позиция X
+  let y = 100;              // Стартовая позиция Y
+  let vx = 6;               // Начальная скорость по X (толчок вбок)
+  let vy = 0;               // Начальная скорость по Y
+  let rotation = 0;         // Текущий угол вращения в градусах
+
+  function updatePhysics() {
+    // 1. Применяем физические силы
+    vy += gravity;
+    vx *= frictionX;
+
+    // 2. Изменяем координаты
+    x += vx;
+    y += vy;
+
+    const ballWidth = ball.offsetWidth;
+    const ballHeight = ball.offsetHeight;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // 3. Расчет честных столкновений с границами экрана
+    // Пол
+    if (y + ballHeight > screenHeight) {
+      y = screenHeight - ballHeight;
+      vy = -vy * bounce;
+    }
+    // Потолок
+    if (y < 0) {
+      y = 0;
+      vy = -vy * bounce;
+    }
+    // Правая стена
+    if (x + ballWidth > screenWidth) {
+      x = screenWidth - ballWidth;
+      vx = -vx * bounce;
+    }
+    // Левая стена
+    if (x < 0) {
+      x = 0;
+      vx = -vx * bounce;
+    }
+
+    // 4. Физика вращения колеса
+    // Скорость вращения напрямую привязана к горизонтальной скорости движения (vx).
+    // Чем быстрее мяч летит в сторону, тем быстрее он крутится. При смене направления меняется и сторона вращения.
+    rotation += vx * 1.5;
+
+    // 5. Отрисовка на экране через CSS Transform (работает плавнее, чем left/top)
+    ball.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+
+    requestAnimationFrame(updatePhysics);
+  }
+
+  // Запуск физического движка
+  requestAnimationFrame(updatePhysics);
+</script>
+</body>
+</html>

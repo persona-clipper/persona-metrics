@@ -15,3 +15,6 @@ pub struct AuthorizationUserForm {
     pub username: String,
     pub password: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateUserResponse { pub id: i32 }
