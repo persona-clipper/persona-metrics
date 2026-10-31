@@ -3,23 +3,23 @@ use axum::body::Body;
 use axum::http::{Response, StatusCode};
 use axum::response::{Html, IntoResponse};
 
-pub struct PageMeta {
-    pub title: String,
+pub struct PageMeta<'a> {
+    pub title: &'a str,
 }
 
 #[derive(Template)]
 #[template(path = "base.html")]
 pub struct BasePage<'a> {
-    pub meta: PageMeta,
+    pub meta: PageMeta<'a>,
     pub content: &'a str,
 }
 
-pub struct View<T: Template> {
-    pub meta: PageMeta,
+pub struct View<'a, T: Template> {
+    pub meta: PageMeta<'a>,
     pub template: T,
 }
 
-impl<T: Template> IntoResponse for View<T> {
+impl<T: Template> IntoResponse for View<'_, T> {
     fn into_response(self) -> Response<Body> {
 
         let content = match self.template.render() {

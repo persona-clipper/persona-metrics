@@ -10,7 +10,7 @@ pub async fn get_main_page_handler(
 ) -> impl IntoResponse {
     View {
         meta: PageMeta {
-            title: "Главная страница".to_string(),
+            title: "Главная страница",
         },
         template: MainPage {
             text: "ОООООООООООООПППППППППППППППППППППППППППППАААААААААААААААААААААААААААА".to_string(),
@@ -20,6 +20,11 @@ pub async fn get_main_page_handler(
 
 pub async fn get_registration_form_handler(
     State(state): State<AppState>,
-) -> RegistationForm {
-    RegistationForm {}
+) -> impl IntoResponse {
+    View {
+        meta: PageMeta {
+            title: "Регистрация"
+        },
+        template: RegistationForm {}
+    }
 }

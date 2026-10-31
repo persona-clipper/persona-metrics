@@ -10,6 +10,7 @@ serde_json = { workspace = true }
 core-library-db-queries = { workspace = true }
 core-library-db-types = { workspace = true }
 core-library-tsdb = { workspace = true }
+core-web-types = { workspace = true }
 axum = { workspace = true }
 tokio = { workspace = true }
 sqlx = { workspace = true }
