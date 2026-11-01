@@ -1,3 +1,4 @@
-pub mod modules;
-pub mod handlers;
-pub mod types;
+
+pub mod interface;
+pub mod model;
+pub mod infrastructure;

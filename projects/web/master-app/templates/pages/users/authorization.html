@@ -1,0 +1,26 @@
+
+<div class="signup-container">
+  <form action="/login" class="signup-form" method="post">
+    <h2>Авторизация</h2>
+    <div class="form-input">
+      <label for="username">Введите свой уникальный юзернейм</label>
+      <input type="text"
+             id="username"
+             name="username"
+             maxlength="255"
+             placeholder="Введите свой юзернейм"
+             required>
+    </div>
+
+    <div class="form-input">
+      <label for="password">Введите пароль</label>
+      <input type="text" id="password" name="password" placeholder="Введите пароль" required>
+    </div>
+
+    <button type="submit">Войти</button>
+
+    <p class="login-link">
+      <a href="/signup">Нет аккаунта? Создать аккаунт</a>
+    </p>
+  </form>
+</div>

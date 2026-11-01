@@ -12,8 +12,11 @@ reqwest = { workspace = true }
 tower-http = { workspace = true }
 core-library-db-types = { workspace = true }
 core-web-types = { workspace = true }
+tower-sessions = { workspace = true }
+tower-sessions-sqlx-store = { workspace = true }
 
-compact_str = "0.10.0"
+compact_str = { workspace = true }
+smart-default = { workspace = true }
 
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }

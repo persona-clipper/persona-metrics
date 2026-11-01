@@ -1,20 +1,31 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <title>{{ meta.title }}</title>
-</head>
-<body>
-    {% include "components/header.html" %}
-    <main id="content">
-        {% include "components/sidebar.html" %}
-        {% block content %}
-            {{ content|safe }}
-        {% endblock %}
-    </main>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% if meta.description.is_some() %}
+            <meta name="description" content="{{ meta.description.unwrap() }}">
+        {% endif %}
+        <meta name="author" content="Nikita Lider">
+        <meta name="keywords" content="Metrics, Monitoring, Open Source">
+        <link rel="stylesheet" href="/static/css/input.css">
+        <title>{{ meta.title }}</title>
+    </head>
+    <body>
+        {% if meta.flags.show_header %}
+            {% include "components/header.html" %}
+        {% endif %}
 
-    {% include "components/footer.html" %}
-</body>
+        <main id="content" class="">
+            {% if meta.flags.show_sidebar %}
+                {% include "components/sidebar.html" %}
+            {% endif %}
+
+            {% block content %}{{ content|safe }}{% endblock %}
+        </main>
+
+        {% if meta.flags.show_footer %}
+            {% include "components/footer.html" %}
+        {% endif %}
+    </body>
 </html>
