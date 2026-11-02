@@ -24,8 +24,10 @@ pub async fn auth_user_handler(
             return Redirect::to("/signup")
         }
     };
-    let response = state.http_client.post(url)
+    let response = state.http_client.post(url);
 
+    todo!("Доделать авторизация");
+    Redirect::to("/")
 }
 
 pub async fn get_form(
