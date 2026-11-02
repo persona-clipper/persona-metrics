@@ -10,6 +10,8 @@ use master_app::infrastructure::states::AppState;
 
 #[tokio::main]
 async fn main() {
+    dotenvy::dotenv().ok();
+
     tracing_subscriber::fmt()
         .compact()
         .without_time()

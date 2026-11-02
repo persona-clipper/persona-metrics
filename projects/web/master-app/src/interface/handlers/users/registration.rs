@@ -17,7 +17,7 @@ struct RegistrationForm;
 pub async fn create_user_handler(
     State(state): State<AppState>,
     Form(form): Form<RegistrationUserForm>,
-) -> impl IntoResponse {
+) -> Redirect {
     tracing::info!("{:#?}", form);
 
     if Password::new(&form.password).check(&form.password_confirm).is_err() {
@@ -28,8 +28,14 @@ pub async fn create_user_handler(
         return Redirect::to("/signup")
     }
 
-   let response = state.http_client
-       .post(format!("{}/v1/users", state.api.write_url))
+    let url = match state.api.write_url.join("v1/users") {
+        Ok(url) => url,
+        Err(_) => {
+            return Redirect::to("/signup")
+        }
+    };
+    let response = state.http_client
+       .post(url)
        .json(&form)
        .send()
        .await;

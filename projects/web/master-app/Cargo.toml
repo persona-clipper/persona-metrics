@@ -14,9 +14,10 @@ core-library-db-types = { workspace = true }
 core-web-types = { workspace = true }
 tower-sessions = { workspace = true }
 tower-sessions-sqlx-store = { workspace = true }
-
+url = { workspace = true }
 compact_str = { workspace = true }
 smart-default = { workspace = true }
+dotenvy = { workspace = true }
 
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
