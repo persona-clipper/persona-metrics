@@ -1,7 +1,9 @@
-
 <div class="signup-container">
     <form action="/signup" class="signup-form" method="post">
-        <h2>Регистрация</h2>
+        <div>
+            <h2 class="">Создать аккаунт</h2>
+            <p class="opacity-70 text-m mb-5! text-center">Начните работу с инфраструктурой в Persona Metrics</p>
+        </div>
         <div class="form-input">
             <label for="username">Введите свой уникальный юзернейм</label>
             <input type="text"
@@ -10,6 +12,7 @@
                    maxlength="255"
                    placeholder="Введите свой юзернейм"
                    required>
+            <p>Используется для входа в аккаунт. Минимум 8 символов</p>
         </div>
 
         <div class="form-input">
@@ -23,6 +26,7 @@
         <div class="form-input">
             <label for="password">Введите пароль</label>
             <input type="text" id="password" name="password" placeholder="Введите пароль" required>
+            <p>Минимум 8 символов</p>
         </div>
 
         <div class="form-input">
@@ -34,7 +38,7 @@
                    required>
         </div>
 
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">Зарегистрироваться &rarr; </button>
 
         <p class="login-link">
             <a href="/login">Есть аккаунт? Войти</a>

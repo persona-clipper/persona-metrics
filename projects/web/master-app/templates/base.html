@@ -8,24 +8,24 @@
         {% endif %}
         <meta name="author" content="Nikita Lider">
         <meta name="keywords" content="Metrics, Monitoring, Open Source">
-        <link rel="stylesheet" href="/static/css/input.css">
+        <link rel="stylesheet" href="/static/css/output.css">
         <title>{{ meta.title }}</title>
     </head>
     <body>
         {% if meta.flags.show_header %}
-            {% include "components/header.html" %}
+            {% include "components/common/header.html" %}
         {% endif %}
 
         <main id="content" class="">
             {% if meta.flags.show_sidebar %}
-                {% include "components/sidebar.html" %}
+                {% include "components/common/sidebar.html" %}
             {% endif %}
 
             {% block content %}{{ content|safe }}{% endblock %}
         </main>
 
         {% if meta.flags.show_footer %}
-            {% include "components/footer.html" %}
+            {% include "components/common/footer.html" %}
         {% endif %}
     </body>
 </html>

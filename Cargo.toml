@@ -17,10 +17,10 @@ members = [
     "projects/web/core/db/types",
     "projects/web/core/db/queries",
     "projects/web/core/web-types",
-#    "projects/web/core/types",
+#    "projects/web/core/entities",
 ]
 exclude = [
-    #    "projects/persona-exporter-types",
+    #    "projects/persona-exporter-entities",
 #        "projects/persona-exporter/persona-exporter-util"
 ]
 resolver = "2"
@@ -34,8 +34,8 @@ core-library-db-queries = { path = "./projects/web/core/db/queries" }
 core-library-tsdb = { path = "./projects/web/core/db-time-series", package = "core-library-db-time-series" }
 core-web-types = { path = "./projects/web/core/web-types", package = "web-types" }
 ## A local crate for working with data structures for the main web application
-#local-core-types = { path = "./projects/web/core/types" }
-## A dedicated crate containing data types for persona-exporter
+#local-core-entities = { path = "./projects/web/core/entities" }
+## A dedicated crate containing data entities for persona-exporter
 ## (https://github.com/persona-clipper/persona-exporter)
 persona-exporter-types = { version = "3.0.0", features = ["full"] }
 
@@ -71,6 +71,7 @@ serde_json = { version = "1.0.154" }
 
 # Optimizations
 compact_str = { version = "0.10.0", features = ["serde"]}
+smart-default = { version = "0.7.1" }
 smallvec = { version = "1.16.2", features = ["serde"]}
 dotenvy = "0.15.7"
 

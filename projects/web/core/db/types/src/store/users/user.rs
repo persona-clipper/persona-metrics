@@ -1,8 +1,8 @@
+use std::string::ToString;
 use chrono::{TimeZone, Utc};
 use compact_str::CompactString;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, Type};
-
 #[derive(Type, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[sqlx(type_name = "user_role", rename_all="lowercase")]
 pub enum UserRole {
@@ -31,4 +31,24 @@ pub struct CreateUserRow {
     pub username: String,
     pub display_name: Option<String>,
     pub email: Option<String>,
+}
+
+pub struct User(String);
+
+#[derive(Debug)]
+pub enum UserError {
+    NotEnoughLength,
+    InvalidCharactersInUsername,
+}
+impl User {
+    pub fn new(username: &str) -> Result<Self, UserError> {
+        if username.len() < 8 {
+            return Err(UserError::NotEnoughLength);
+        }
+        if !username.chars().any(|c| { c.is_alphanumeric() }) {
+            return Err(UserError::InvalidCharactersInUsername);
+        }
+
+        Ok(Self(username.to_string()))
+    }
 }

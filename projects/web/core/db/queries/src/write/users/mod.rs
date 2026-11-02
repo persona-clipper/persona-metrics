@@ -5,7 +5,7 @@ use axum::response::IntoResponse;
 use sqlx::PgPool;
 use core_library_db_types::store::users::password::Password;
 use core_library_db_types::store::users::user::CreateUserRow;
-use core_web_types::modules::users::forms::{CreateUserResponse, RegistrationUserForm};
+use core_web_types::infrastructure::users::forms::{CreateUserResponse, RegistrationUserForm};
 
 pub async fn insert_user_query(
     form: CreateUserRow,

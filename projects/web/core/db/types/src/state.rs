@@ -1,13 +1,14 @@
 use compact_str::CompactString;
 use serde::{Deserialize, Serialize};
+use crate::store::users::password::PasswordError;
 
 #[derive(Serialize, Deserialize)]
 pub enum ApiErrorCode {
+    Password(PasswordError),
     Unknown,
-    PasswordMismatch,
-    PasswordNotEnoughLength,
     UserNotFound,
 }
+
 
 #[derive(Serialize, Deserialize)]
 pub struct ApiErrorResponse {

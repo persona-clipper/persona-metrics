@@ -20,7 +20,7 @@ pub async fn create_user_handler(
 ) -> impl IntoResponse {
     tracing::info!("{:#?}", form);
 
-    if Password::new(&form.password, &form.password_confirm).is_err() {
+    if Password::new(&form.password).check(&form.password_confirm).is_err() {
         return Redirect::to("/signup");
     }
     if let Err(err) = User::new(&form.username) {
@@ -47,7 +47,7 @@ pub async fn create_user_handler(
     Redirect::to("/")
 }
 
-pub async fn get_registration_form_handler(
+pub async fn get_form(
     State(_state): State<AppState>,
 ) -> impl IntoResponse {
     View {

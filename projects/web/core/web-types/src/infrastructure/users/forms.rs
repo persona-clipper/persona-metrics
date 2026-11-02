@@ -10,7 +10,7 @@ pub struct RegistrationUserForm {
     pub password_confirm: String,
 }
 
-#[derive(Serialize, Deserialize, FromRow)]
+#[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct AuthorizationUserForm {
     pub username: String,
     pub password: String,

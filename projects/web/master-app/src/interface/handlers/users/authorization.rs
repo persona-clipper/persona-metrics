@@ -2,6 +2,7 @@ use askama::Template;
 use axum::extract::State;
 use axum::Form;
 use axum::response::IntoResponse;
+use core_library_db_types::store::users::password::Password;
 use core_web_types::infrastructure::users::forms::AuthorizationUserForm;
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
 use crate::infrastructure::states::AppState;
@@ -10,7 +11,16 @@ use crate::infrastructure::states::AppState;
 #[template(path = "pages/users/authorization.html")]
 struct AuthorizationForm;
 
-pub async fn get_authorization_user_form(
+
+pub async fn auth_user_handler(
+    State(state): State<AppState>,
+    Form(form): Form<AuthorizationUserForm>
+) -> impl IntoResponse {
+    tracing::info!("{:#?}", form);
+
+}
+
+pub async fn get_form(
     State(state): State<AppState>,
 ) -> impl IntoResponse  {
     View {
