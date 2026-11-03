@@ -74,6 +74,7 @@ compact_str = { version = "0.10.0", features = ["serde"]}
 smart-default = { version = "0.7.1" }
 smallvec = { version = "1.16.2", features = ["serde"]}
 dotenvy = "0.15.7"
+url = { version = "2.5.8"}
 
 [profile.release]
 opt-level = "s"

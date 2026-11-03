@@ -1,16 +1,30 @@
 use std::fmt::{Display, Formatter};
 use argon2::{Argon2, PasswordHash};
+use axum::http::StatusCode;
 use password_hash::{PasswordHasher, PasswordVerifier};
 use password_hash::phc::SaltString;
 use serde::{Deserialize, Serialize};
+use crate::infrastructure::model::ToHttpCode;
 
 pub struct Password(String);
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug, Copy)]
 pub enum PasswordError {
-    Mismatch,
-    NotEnoughLength,
-    FailedToHash,
+    PasswordMismatch,
+    PasswordNotEnoughLength,
+    PasswordFailedToHash,
+    PasswordFailedToVerify,
+}
+
+impl ToHttpCode for PasswordError {
+    fn http_code(&self) -> StatusCode {
+        match &self {
+            PasswordError::PasswordMismatch => StatusCode::UNAUTHORIZED,
+            PasswordError::PasswordNotEnoughLength => StatusCode::BAD_REQUEST,
+            PasswordError::PasswordFailedToHash => StatusCode::INTERNAL_SERVER_ERROR,
+            PasswordError::PasswordFailedToVerify => StatusCode::UNAUTHORIZED,
+        }
+    }
 }
 
 impl Display for Password {
@@ -21,10 +35,10 @@ impl Display for Password {
 impl Password {
     pub fn check(&self, confirm: &str) -> Result<(), PasswordError> {
         if self.0.len() < 8 {
-            return Err(PasswordError::NotEnoughLength);
+            return Err(PasswordError::PasswordNotEnoughLength);
         }
         if self.0 != confirm {
-            return Err(PasswordError::Mismatch);
+            return Err(PasswordError::PasswordMismatch);
         }
 
         Ok(())

@@ -1,20 +1,9 @@
+use axum::http::StatusCode;
+use axum::Json;
+use axum::response::{IntoResponse, Response};
 use compact_str::CompactString;
 use serde::{Deserialize, Serialize};
 use crate::store::users::password::PasswordError;
-
-#[derive(Serialize, Deserialize)]
-pub enum ApiErrorCode {
-    Password(PasswordError),
-    Unknown,
-    UserNotFound,
-}
-
-
-#[derive(Serialize, Deserialize)]
-pub struct ApiErrorResponse {
-    pub code: ApiErrorCode,
-    pub message: String,
-}
 
 #[derive(Serialize, Deserialize)]
 pub struct ApiInfo {

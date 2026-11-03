@@ -1,11 +1,15 @@
 use axum::Router;
 use axum::routing::{get, Route};
 use tower_http::services::ServeDir;
+use tower_sessions::{MemoryStore, SessionManagerLayer};
 use crate::infrastructure::states::AppState;
 use crate::interface::handlers::main_page::{get_main_page_handler, get_physic_ball};
 use crate::interface::handlers::users::*;
 
-pub fn app_router(state: AppState) -> Router {
+pub fn app_router(
+    state: AppState,
+    session: SessionManagerLayer<MemoryStore>
+) -> Router {
     Router::new()
         .route("/", get(get_main_page_handler))
         .route("/signup", get(registration::get_form).post(registration::create_user_handler))
@@ -13,4 +17,5 @@ pub fn app_router(state: AppState) -> Router {
         .route("/physic", get(get_physic_ball))
         .nest_service("/static", ServeDir::new("static"))
         .with_state(state)
+        .layer(session)
 }

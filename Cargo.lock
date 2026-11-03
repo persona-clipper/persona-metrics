@@ -89,6 +89,7 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "web-types",
 ]
 
 [[package]]
@@ -897,6 +898,7 @@ name = "core-library-db-types"
 version = "0.1.0"
 dependencies = [
  "argon2",
+ "axum",
  "chrono",
  "compact_str",
  "password-hash",
@@ -2535,6 +2537,7 @@ dependencies = [
  "axum",
  "compact_str",
  "core-library-db-types",
+ "dotenvy",
  "reqwest",
  "serde",
  "smart-default",
@@ -2544,6 +2547,7 @@ dependencies = [
  "tower-sessions-sqlx-store",
  "tracing",
  "tracing-subscriber",
+ "url",
  "web-types",
 ]
 

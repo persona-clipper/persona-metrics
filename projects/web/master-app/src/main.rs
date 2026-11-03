@@ -1,6 +1,6 @@
 use axum::Router;
 use axum::routing::get;
-use master_app::infrastructure::layers::apply_session_layer;
+use master_app::infrastructure::layers::{init_session_layer};
 use master_app::infrastructure::routes::app_router;
 use master_app::interface::handlers::main_page::{get_main_page_handler, get_physic_ball};
 use master_app::interface::handlers::users::registration::{create_user_handler, get_form};
@@ -17,10 +17,10 @@ async fn main() {
         .without_time()
         .init();
 
-    let state = AppState::new();
+    let state = AppState::default();
 
-    let router = app_router(state);
-    let app: Router = apply_session_layer(router);
+    let session = init_session_layer();
+    let app = app_router(state, session);
 
     // let app = Router::new()
     //     .route("/", get(get_main_page_handler))
