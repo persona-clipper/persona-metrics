@@ -18,3 +18,9 @@ pub struct AuthorizationUserForm {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateUserResponse { pub id: i32 }
+
+#[derive(Serialize, Deserialize)]
+pub struct AuthorizationUserResponse {
+    pub id: i32,
+    pub avatar_path: String,
+}

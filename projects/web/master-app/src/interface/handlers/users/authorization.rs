@@ -4,8 +4,9 @@ use axum::Form;
 use axum::response::{IntoResponse, Redirect};
 use tower_sessions::Session;
 use core_library_db_types::store::users::password::Password;
-use core_web_types::infrastructure::users::forms::AuthorizationUserForm;
+use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, AuthorizationUserResponse};
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
+use crate::infrastructure::session::{SessionContext, UserInfo};
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
@@ -14,7 +15,7 @@ struct AuthorizationForm;
 
 
 pub async fn auth_user_handler(
-    session: Session,
+    session: SessionContext,
     State(state): State<AppState>,
     Form(form): Form<AuthorizationUserForm>,
 ) -> Redirect {
@@ -33,11 +34,17 @@ pub async fn auth_user_handler(
         .await;
 
     match response {
-        Ok(id) => {
+        Ok(res) => {
+            let response = res.json::<AuthorizationUserResponse>().await;
+
+
         },
         Err(err) => {
+            let _ = session.session.insert("message", "Что-то пошло не так".to_string()).await;
+            return Redirect::to("/login")
         }
     }
+
     Redirect::to("/")
 }
 

@@ -75,6 +75,7 @@ smart-default = { version = "0.7.1" }
 smallvec = { version = "1.16.2", features = ["serde"]}
 dotenvy = "0.15.7"
 url = { version = "2.5.8"}
+async-trait = "0.1.92"
 
 [profile.release]
 opt-level = "s"

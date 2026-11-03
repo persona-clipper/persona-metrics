@@ -2534,6 +2534,7 @@ version = "0.1.0"
 dependencies = [
  "askama",
  "askama_web",
+ "async-trait",
  "axum",
  "compact_str",
  "core-library-db-types",
