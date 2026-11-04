@@ -7,7 +7,7 @@ use serde_json::json;
 use core_library_db_queries::read::users::user::{check_user_auth, get_user_by_id};
 use core_library_db_types::error::{ApiErrorCode, ApiErrorResponse};
 use core_library_db_types::store::users::user::{GetUserRow, UserError};
-use core_web_types::infrastructure::users::forms::AuthorizationUserForm;
+use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 use crate::state::AppState;
 
 /// Эндпоинт для получения информации о пользователе по его 
@@ -19,22 +19,14 @@ use crate::state::AppState;
 pub async fn get_by_id_handler(
     Path(id): Path<i32>,
     State(state): State<AppState>,
-) -> Result<(StatusCode, Json<GetUserRow>), ApiErrorResponse> {
+) -> Result<(StatusCode, Json<GetUserRow>), ApiErrorCode> {
     let user = match get_user_by_id(id, state.db.clone()).await {
         Ok(user) => user,
         Err(sqlx::Error::RowNotFound) => {
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::User(UserError::UserNotFound),
-                message: "User not found".to_string(),
-            };
-            return Err(err);
+            return Err(ApiErrorCode::User(UserError::UserNotFound));
         },
         Err(err) => {
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::Other,
-                message: format!("Error: {err}"),
-            };
-            return Err(err);
+            return Err(ApiErrorCode::Other { reason: err.to_string() });
         },
     };
 
@@ -44,17 +36,14 @@ pub async fn get_by_id_handler(
 pub async fn auth_handler(
     State(state): State<AppState>,
     Json(form): Json<AuthorizationUserForm>,
-) -> Result<(StatusCode, Json<i32>), ApiErrorResponse> {
+) -> Result<(StatusCode, Json<SessionUserInfo>), ApiErrorCode> {
     match check_user_auth(&form, state.db.clone()).await {
-        Ok(id) => {
-            Ok((StatusCode::OK, Json(id)))
+        Ok(info) => {
+            Ok((StatusCode::OK, Json(info)))
         },
         Err(err_code) => {
-            let err = ApiErrorResponse {
-                code: err_code,
-                message: "Пользователь не найден".into(),
-            };
-            Err(err)
+            Err(err_code)
         },
     }
 }
+

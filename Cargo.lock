@@ -905,6 +905,8 @@ dependencies = [
  "rand_core 0.10.1",
  "serde",
  "sqlx 0.9.0",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]

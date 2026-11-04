@@ -4,25 +4,48 @@ use axum::http::StatusCode;
 use password_hash::{PasswordHasher, PasswordVerifier};
 use password_hash::phc::SaltString;
 use serde::{Deserialize, Serialize};
-use crate::infrastructure::model::ToHttpCode;
+use crate::infrastructure::model::{ToHttpCode, ToHumanMessage};
 
 pub struct Password(String);
 
-#[derive(Serialize, Deserialize, Clone, Debug, Copy)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum PasswordError {
     PasswordMismatch,
     PasswordNotEnoughLength,
-    PasswordFailedToHash,
-    PasswordFailedToVerify,
+    PasswordFailedToHash { reason: String},
+    PasswordFailedToVerify { reason: String },
 }
 
 impl ToHttpCode for PasswordError {
     fn http_code(&self) -> StatusCode {
         match &self {
-            PasswordError::PasswordMismatch => StatusCode::UNAUTHORIZED,
+            PasswordError::PasswordMismatch =>  StatusCode::UNAUTHORIZED,
             PasswordError::PasswordNotEnoughLength => StatusCode::BAD_REQUEST,
-            PasswordError::PasswordFailedToHash => StatusCode::INTERNAL_SERVER_ERROR,
-            PasswordError::PasswordFailedToVerify => StatusCode::UNAUTHORIZED,
+            PasswordError::PasswordFailedToHash { .. } => StatusCode::INTERNAL_SERVER_ERROR,
+            PasswordError::PasswordFailedToVerify { .. } => StatusCode::UNAUTHORIZED,
+        }
+    }
+}
+
+impl ToHumanMessage for PasswordError {
+    fn message(&self) -> String {
+        match self {
+            PasswordError::PasswordMismatch => {
+                tracing::warn!("Passwords do not mismatch");
+                "Пароли не совпадают".into()
+            }
+            PasswordError::PasswordNotEnoughLength => {
+                tracing::warn!("Password not enough length");
+                "Пароль недостаточной длины".into()
+            },
+            PasswordError::PasswordFailedToHash { reason: r} => {
+                tracing::error!("Failed to hash password. Error: {r}");
+                "Не удалось захешировать пароль".into()
+            }
+            PasswordError::PasswordFailedToVerify { reason: r}=> {
+                tracing::error!("Failed to verify your password. Error: {r}");
+                "Не удалось верифицировать пароль".into()
+            }
         }
     }
 }

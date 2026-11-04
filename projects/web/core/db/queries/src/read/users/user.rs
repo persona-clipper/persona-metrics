@@ -1,5 +1,6 @@
 use std::error::Error;
 use std::fmt::format;
+use std::io::read_to_string;
 use argon2::{Argon2, PasswordHash};
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
@@ -10,7 +11,7 @@ use sqlx::PgPool;
 use core_library_db_types::error::ApiErrorCode;
 use core_library_db_types::store::users::password::PasswordError;
 use core_library_db_types::store::users::user::{GetUserRow, UserError, UserRole};
-use core_web_types::infrastructure::users::forms::AuthorizationUserForm;
+use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 
 // pub struct User();
 pub async fn get_user_by_id(
@@ -61,9 +62,9 @@ pub async fn check_user_is_exist(
 pub async fn check_user_auth(
     form: &AuthorizationUserForm,
     pool: PgPool,
-) -> Result<i32, ApiErrorCode> {
+) -> Result<SessionUserInfo, ApiErrorCode> {
     let response = sqlx::query!(
-        "SELECT password_hash, id FROM users WHERE username = $1",
+        "SELECT avatar_path, password_hash, id FROM users WHERE username = $1",
         form.username,
     ).fetch_one(&pool).await;
 
@@ -72,19 +73,42 @@ pub async fn check_user_auth(
         Err(sqlx::Error::RowNotFound) => {
             return Err(ApiErrorCode::User(UserError::UserNotFound))
         }
-        Err(_) => {
-            return Err(ApiErrorCode::Other)
+        Err(err) => {
+            return Err(ApiErrorCode::Other { reason: err.to_string() })
         }
     };
 
     let password_hash_from_db = match PasswordHash::new(&user_info.password_hash) {
         Ok(hash) => hash,
-        Err(_) => return Err(ApiErrorCode::Password(PasswordError::PasswordFailedToHash)),
+        Err(err) => return Err(ApiErrorCode::Password(PasswordError::PasswordFailedToHash { reason: err.to_string() })),
     };
 
     match Argon2::default().verify_password(form.password.as_bytes(), &password_hash_from_db) {
-        Ok(_) => Ok(user_info.id),
-        Err(_) => Err(ApiErrorCode::Password(PasswordError::PasswordFailedToVerify)),
+        Ok(_) => Ok(SessionUserInfo {
+            id: user_info.id,
+            avatar_path: user_info.avatar_path,
+        }),
+        Err(err) => Err(ApiErrorCode::Password(PasswordError::PasswordFailedToVerify { reason: err.to_string() })),
+    }
+}
+
+pub async fn fetch_user_info_for_auth(id: i32, pool: PgPool) -> Result<SessionUserInfo, ApiErrorCode> {
+   let query = sqlx::query_as!(
+       SessionUserInfo,
+       "SELECT id, avatar_path FROM users WHERE id = $1",
+       id,
+   ).fetch_one(&pool).await;
+
+    match query {
+        Ok(info) => {
+           Ok(info)
+        }
+        Err(sqlx::Error::RowNotFound) => {
+            Err(ApiErrorCode::User(UserError::UserNotFound))
+        }
+        Err(err) => {
+            Err(ApiErrorCode::User(UserError::UserFailAuth { reason: err.to_string() }))
+        }
     }
 }
 

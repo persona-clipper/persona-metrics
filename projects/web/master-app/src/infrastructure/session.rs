@@ -6,18 +6,13 @@ use serde::{Deserialize, Serialize};
 use tower_http::classify::ServerErrorsFailureClass::StatusCode;
 use tower_sessions::Session;
 use core_library_db_types::store::users::user::User;
+use core_web_types::infrastructure::users::forms::SessionUserInfo;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct UserInfo {
-    pub id: i32,
-    pub avatar_path: String,
-
-}
 #[derive(Clone, Debug)]
 pub struct SessionContext {
     pub session: Session,
     pub message: Option<String>,
-    pub user: Option<UserInfo>,
+    pub user: Option<SessionUserInfo>,
 }
 
 // #[async_trait]
@@ -32,7 +27,7 @@ where
             .await
             .map_err(|e| (http::StatusCode::INTERNAL_SERVER_ERROR, e.0.to_string()))?;
 
-        let user: Option<UserInfo> = session
+        let user: Option<SessionUserInfo> = session
             .get("user")
             .await
             .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `user` from session".into()))?;
@@ -42,6 +37,7 @@ where
             .await
             .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `message` from session".into()))?;
 
+        tracing::debug!("Session: {:#?}", session);
         Ok(Self {
             session,
             message,

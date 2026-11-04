@@ -2,11 +2,12 @@ use askama::Template;
 use axum::extract::State;
 use axum::Form;
 use axum::response::{IntoResponse, Redirect};
+use serde::Serialize;
 use tower_sessions::Session;
 use core_library_db_types::store::users::password::Password;
-use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, AuthorizationUserResponse};
+use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
-use crate::infrastructure::session::{SessionContext, UserInfo};
+use crate::infrastructure::session::SessionContext;
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
@@ -15,13 +16,13 @@ struct AuthorizationForm;
 
 
 pub async fn auth_user_handler(
-    session: SessionContext,
+    mut session: SessionContext,
     State(state): State<AppState>,
     Form(form): Form<AuthorizationUserForm>,
 ) -> Redirect {
     tracing::info!("{:#?}", form);
 
-    let url = match state.api.write_url.join("v1/users") {
+    let url = match state.api.read_url.join("v1/users/auth") {
         Ok(url) => url,
         Err(_) => {
             return Redirect::to("/signup")
@@ -35,13 +36,18 @@ pub async fn auth_user_handler(
 
     match response {
         Ok(res) => {
-            let response = res.json::<AuthorizationUserResponse>().await;
-
-
+            let response = res.json::<SessionUserInfo>().await;
+            tracing::info!("Res: {:#?}", response);
+            if let Ok(auth_info) = response {
+                let _ = session.session.insert("user", &auth_info).await;
+                session.user = Some(auth_info);
+            }
+            tracing::info!("Session: {:#?}", session);
         },
         Err(err) => {
             let _ = session.session.insert("message", "Что-то пошло не так".to_string()).await;
-            return Redirect::to("/login")
+            tracing::info!("Session: {:#?}", session);
+            return Redirect::to("/login");
         }
     }
 

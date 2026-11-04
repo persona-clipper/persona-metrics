@@ -15,56 +15,58 @@ use crate::state::{AppState};
 pub async fn create_user_handler(
     State(state): State<AppState>,
     Json(form): Json<RegistrationUserForm>,
-) -> Result<(StatusCode, Json<CreateUserResponse>), ApiErrorResponse> {
+) -> Result<(StatusCode, Json<CreateUserResponse>), ApiErrorCode> {
     let password = Password::new(&form.password);
-    match password.check(&form.password_confirm) {
-        Ok(_) => {},
-        Err(PasswordError::PasswordNotEnoughLength) => {
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::Password(PasswordError::PasswordNotEnoughLength),
-                message: "Пароль недостаточно длинный (минимум 8 символов)".into(),
-            };
-            return Err(err);
-        },
-        Err(PasswordError::PasswordMismatch) => {
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::Password(PasswordError::PasswordMismatch),
-                message: "Пароли не совпадают".into(),
-            };
-            return Err(err);
-        },
-        Err(err) => {}
-    };
-
+    // match password.check(&form.password_confirm) {
+    //     Ok(_) => {},
+    //     Err(PasswordError::PasswordNotEnoughLength) => {
+    //         return Err(ApiErrorCode::Password(err))
+    //         let err = ApiErrorResponse {
+    //             code: ApiErrorCode::Password(PasswordError::PasswordNotEnoughLength),
+    //             message: "Пароль недостаточно длинный (минимум 8 символов)".into(),
+    //         };
+    //         return Err(err);
+    //     },
+    //     Err(PasswordError::PasswordMismatch) => {
+    //         let err = ApiErrorResponse {
+    //             code: ApiErrorCode::Password(PasswordError::PasswordMismatch),
+    //             message: "Пароли не совпадают".into(),
+    //         };
+    //         return Err(err);
+    //     },
+    //     Err(err) => {
+    //         return Err()
+    //     }
+    // };
+    
     if let Err(err) = password.check(&form.password_confirm) {
-        let mut response = ApiErrorResponse {
-            code: ApiErrorCode::Password(err),
-            message: String::new(),
-        };
-        match err {
-            PasswordError::PasswordMismatch => {
-                response.message = "Пароли не совпадают".into();
-            },
-            PasswordError::PasswordNotEnoughLength => {
-                response.message = "Не достаточная длина пароля".into();
-            },
-            _ => {
-                response.message = format!("Что-то пошло не так: {:?}", err);
-            }
-        }
-
-        return Err(response);
+        return Err(ApiErrorCode::Password(err));
     }
+
+    // if let Err(err) = password.check(&form.password_confirm) {
+    //     let mut response = ApiErrorResponse {
+    //         code: ApiErrorCode::Password(err),
+    //         message: String::new(),
+    //     };
+    //     match err {
+    //         PasswordError::PasswordMismatch => {
+    //             response.message = "Пароли не совпадают".into();
+    //         },
+    //         PasswordError::PasswordNotEnoughLength => {
+    //             response.message = "Не достаточная длина пароля".into();
+    //         },
+    //         _ => {
+    //             response.message = format!("Что-то пошло не так: {:?}", err);
+    //         }
+    //     }
+    // 
+    //     return Err(response);
+    // }
 
     let hash = match password.hashing() {
         Ok(hash) => hash,
         Err(err) => {
-            tracing::error!("Failed to hash password: {}", err);
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::Password(PasswordError::PasswordFailedToHash),
-                message: "Не удалось захешировать пароль".to_string(),
-            };
-            return Err(err);
+            return Err(ApiErrorCode::Password(PasswordError::PasswordFailedToHash { reason: err.to_string() }));
         }
     };
 
@@ -80,11 +82,7 @@ pub async fn create_user_handler(
         }
         Err(err) => {
             tracing::error!("{}", err);
-            let err = ApiErrorResponse {
-                code: ApiErrorCode::Other,
-                message: err.to_string(),
-            };
-            Err(err)
+            Err(ApiErrorCode::Other { reason: err.to_string()})
         }
     }
 }

@@ -19,8 +19,11 @@ pub struct AuthorizationUserForm {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateUserResponse { pub id: i32 }
 
-#[derive(Serialize, Deserialize)]
-pub struct AuthorizationUserResponse {
+/// Метод авторизации пользователя должна возвращать данную структуру
+/// замена `AuthorizationUserResponse`
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct SessionUserInfo {
     pub id: i32,
-    pub avatar_path: String,
+    pub avatar_path: Option<String>,
+
 }
