@@ -9,13 +9,13 @@ use core_library_db_queries::write::users::insert_user_query;
 use core_library_db_types::error::{ApiErrorCode, ApiErrorResponse};
 use core_library_db_types::store::users::password::{Password, PasswordError};
 use core_library_db_types::store::users::user::CreateUserRow;
-use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, CreateUserResponse, RegistrationUserForm};
+use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, CreateUserResponse, RegistrationUserForm, SessionUserInfo};
 use crate::state::{AppState};
 
 pub async fn create_user_handler(
     State(state): State<AppState>,
     Json(form): Json<RegistrationUserForm>,
-) -> Result<(StatusCode, Json<CreateUserResponse>), ApiErrorCode> {
+) -> Result<(StatusCode, Json<SessionUserInfo>), ApiErrorCode> {
     let password = Password::new(&form.password);
     // match password.check(&form.password_confirm) {
     //     Ok(_) => {},
@@ -38,7 +38,7 @@ pub async fn create_user_handler(
     //         return Err()
     //     }
     // };
-    
+
     if let Err(err) = password.check(&form.password_confirm) {
         return Err(ApiErrorCode::Password(err));
     }
@@ -59,7 +59,7 @@ pub async fn create_user_handler(
     //             response.message = format!("Что-то пошло не так: {:?}", err);
     //         }
     //     }
-    // 
+    //
     //     return Err(response);
     // }
 
@@ -77,8 +77,8 @@ pub async fn create_user_handler(
         email: form.email,
     };
     match insert_user_query(request, state.db.clone()).await {
-        Ok(response) => {
-            Ok((StatusCode::CREATED, Json(response)))
+        Ok(user_info) => {
+            Ok((StatusCode::CREATED, Json(user_info)))
         }
         Err(err) => {
             tracing::error!("{}", err);
@@ -86,14 +86,3 @@ pub async fn create_user_handler(
         }
     }
 }
-
-// pub async fn auth_user_handler(
-//     State(state): State<AppState>,
-//     Json(form): Json<AuthorizationUserForm>,
-// ) {
-//     todo!("Доделать авторизацию");
-//     check_user_auth(&form, state.db.clone()).await;
-// }
-// 
-
-

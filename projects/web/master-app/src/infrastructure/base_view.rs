@@ -3,6 +3,7 @@ use axum::body::Body;
 use axum::http::{Response, StatusCode};
 use axum::response::{Html, IntoResponse};
 use smart_default::SmartDefault;
+use crate::infrastructure::session::SessionContext;
 
 #[derive(SmartDefault)]
 pub struct Flags {
@@ -19,6 +20,7 @@ pub struct PageMeta<'a> {
     pub title: &'a str,
     pub description: Option<&'a str>,
     pub flags: Flags,
+    pub session: Option<SessionContext>,
 }
 
 #[derive(Template)]

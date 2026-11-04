@@ -9,12 +9,14 @@ use tower_sessions::Session;
 use core_library_db_types::store::users::password::Password;
 use core_library_db_types::store::users::user::User;
 use core_web_types::infrastructure::users::forms::{CreateUserResponse, RegistrationUserForm};
+use crate::infrastructure::session::SessionContext;
 
 #[derive(Template)]
 #[template(path = "pages/users/registration.html")]
 struct RegistrationForm;
 
 pub async fn create_user_handler(
+    mut session: SessionContext,
     State(state): State<AppState>,
     Form(form): Form<RegistrationUserForm>,
 ) -> Redirect {
@@ -54,6 +56,7 @@ pub async fn create_user_handler(
 }
 
 pub async fn get_form(
+    session: SessionContext,
     State(_state): State<AppState>,
 ) -> impl IntoResponse {
     View {
@@ -63,8 +66,9 @@ pub async fn get_form(
             flags: Flags {
                 show_header: false,
                 show_sidebar: false,
-                show_footer: false,
+                show_footer: true,
             },
+            session: Some(session),
             ..Default::default()
         },
         template: RegistrationForm,

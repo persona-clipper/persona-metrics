@@ -55,6 +55,7 @@ pub async fn auth_user_handler(
 }
 
 pub async fn get_form(
+    session: SessionContext,
     State(state): State<AppState>,
 ) -> impl IntoResponse  {
     View {
@@ -65,6 +66,7 @@ pub async fn get_form(
                 show_header: false,
                 ..Default::default()
             },
+            session: Some(session),
             ..Default::default()
         },
         template: AuthorizationForm,
