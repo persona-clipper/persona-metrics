@@ -4,6 +4,7 @@ use axum::Form;
 use axum::response::{IntoResponse, Redirect};
 use serde::Serialize;
 use tower_sessions::Session;
+use tracing::instrument::WithSubscriber;
 use core_library_db_types::store::users::password::Password;
 use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
@@ -12,7 +13,9 @@ use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
 #[template(path = "pages/users/authorization.html")]
-struct AuthorizationForm;
+struct AuthorizationForm {
+    pub error_message: Option<String>
+}
 
 
 pub async fn auth_user_handler(
@@ -34,30 +37,43 @@ pub async fn auth_user_handler(
         .send()
         .await;
 
+    let _ = session.session.remove_value("message").await;
     match response {
         Ok(res) => {
             let response = res.json::<SessionUserInfo>().await;
             tracing::info!("Res: {:#?}", response);
-            if let Ok(auth_info) = response {
-                let _ = session.session.insert("user", &auth_info).await;
-                session.user = Some(auth_info);
+            match response {
+                Ok(user_info) => {
+                    let _ = session.session.insert("user", &user_info).await;
+                    session.user = Some(user_info);
+                    tracing::info!("Session: {:#?}", session);
+
+                    Redirect::to("/")
+                },
+                Err(err) => {
+                    let _ = session.session.insert("message", "Не удалось авторизовать пользователя").await;
+                    session.message = Some("Не удалось авторизовать пользователя".into());
+
+                    Redirect::to("/login")
+                }
             }
-            tracing::info!("Session: {:#?}", session);
         },
         Err(err) => {
-            let _ = session.session.insert("message", "Что-то пошло не так".to_string()).await;
-            tracing::info!("Session: {:#?}", session);
-            return Redirect::to("/login");
+            let _ = session.session.insert("message", "Что-то пошло не так").await;
+            session.message = Some("Что-то пошло не так".into());
+            tracing::error!("Session: {:#?}", session);
+
+            Redirect::to("/login")
         }
     }
-
-    Redirect::to("/")
 }
 
 pub async fn get_form(
     session: SessionContext,
     State(state): State<AppState>,
 ) -> impl IntoResponse  {
+    let message = session.message.clone();
+    let _ = session.session.remove_value("message").await;
     View {
         meta: PageMeta {
             title: "Авторизация",
@@ -66,9 +82,11 @@ pub async fn get_form(
                 show_header: false,
                 ..Default::default()
             },
-            session: Some(session),
+            session: Some(session.clone()),
             ..Default::default()
         },
-        template: AuthorizationForm,
+        template: AuthorizationForm {
+            error_message: message
+        },
     }
 }

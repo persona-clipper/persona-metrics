@@ -1,5 +1,7 @@
-{% macro message(content = "default") %}
+{% macro message(content) %}
+    {% if let Some(message) = content %}
     <div class="message">
-        <p>{{ content }}</p>
+            <p class="text-m py-5 px-10" style="">{{ message }}</p>
     </div>
+    {% endif %}
 {% endmacro %}

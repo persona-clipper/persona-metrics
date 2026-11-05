@@ -1,4 +1,4 @@
-/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.3.4 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -9,8 +9,6 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --spacing: 0.25rem;
-    --text-sm: 0.875rem;
-    --text-sm--line-height: calc(1.25 / 0.875);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -167,18 +165,6 @@
   .static {
     position: static;
   }
-  .\!m-3 {
-    margin: calc(var(--spacing) * 3) !important;
-  }
-  .m-3 {
-    margin: calc(var(--spacing) * 3);
-  }
-  .m-3\! {
-    margin: calc(var(--spacing) * 3) !important;
-  }
-  .mb-5 {
-    margin-bottom: calc(var(--spacing) * 5);
-  }
   .mb-5\! {
     margin-bottom: calc(var(--spacing) * 5) !important;
   }
@@ -186,17 +172,16 @@
     display: block;
   }
   .transform {
-    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+    transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
+  }
+  .px-10 {
+    padding-inline: calc(var(--spacing) * 10);
+  }
+  .py-5 {
+    padding-block: calc(var(--spacing) * 5);
   }
   .text-center {
     text-align: center;
-  }
-  .text-sm {
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
-  }
-  .opacity-50 {
-    opacity: 50%;
   }
   .opacity-70 {
     opacity: 70%;
@@ -225,6 +210,7 @@ html, body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: 20px;
 }
@@ -312,6 +298,10 @@ html, body {
   text-decoration: none;
   opacity: 100%;
 }
+.message {
+  margin-top: 25px;
+  background-color: rgb(255 0 0 / 0.4);
+}
 @property --tw-rotate-x {
   syntax: "*";
   inherits: false;
@@ -333,7 +323,7 @@ html, body {
   inherits: false;
 }
 @layer properties {
-  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: block))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
       --tw-rotate-x: initial;
       --tw-rotate-y: initial;

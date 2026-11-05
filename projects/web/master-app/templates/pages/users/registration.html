@@ -43,5 +43,9 @@
         <p class="login-link">
             <a href="/login">Есть аккаунт? Войти</a>
         </p>
+
+        {% import "components/macros/message_block.html" as scope %}
+
+        {{ scope::message(error_message) }}
     </form>
 </div>

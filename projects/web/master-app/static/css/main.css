@@ -24,6 +24,7 @@ html, body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 20px;
 }
@@ -136,7 +137,10 @@ html, body {
     opacity: 100%;
 }
 
-
+.message {
+    margin-top: 25px;
+    background-color: rgb(255 0 0 / 0.4);
+}
 /*main {*/
 /*    display: flex;*/
 /*    overflow: hidden;*/

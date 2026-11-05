@@ -21,11 +21,10 @@
     <p class="login-link">
       <a href="/signup">Нет аккаунта? Создать аккаунт</a>
     </p>
+
   </form>
 
   {% import "components/macros/message_block.html" as scope %}
 
-  {% if meta.session.message.is_some() %}
-    {{ scope::message(meta.session.message.unwrap()) }}
-  {% endif %}
+  {{ scope::message(error_message) }}
 </div>
