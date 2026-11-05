@@ -25,16 +25,17 @@
 
         <div class="form-input">
             <label for="password">Введите пароль</label>
-            <input type="text" id="password" name="password" placeholder="Введите пароль" required>
+            <input type="password" id="password" name="password" placeholder="Введите пароль" minlength="8" required>
             <p>Минимум 8 символов</p>
         </div>
 
         <div class="form-input">
             <label for="password_confirm">Введите пароль ещё раз</label>
-            <input type="text"
+            <input type="password"
                    id="password_confirm"
                    name="password_confirm"
                    placeholder="Повторите пароль"
+                   minlength="8"
                    required>
         </div>
 
