@@ -890,7 +890,10 @@ dependencies = [
 name = "core-library-db-time-series"
 version = "0.1.0"
 dependencies = [
+ "reqwest",
  "serde",
+ "serde_json",
+ "url",
 ]
 
 [[package]]
@@ -3398,6 +3401,7 @@ dependencies = [
  "rustls-platform-verifier",
  "serde",
  "serde_json",
+ "serde_urlencoded",
  "sync_wrapper",
  "tokio",
  "tokio-rustls",

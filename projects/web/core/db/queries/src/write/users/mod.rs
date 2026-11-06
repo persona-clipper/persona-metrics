@@ -16,7 +16,7 @@ pub async fn insert_user_query(
         r#"
         INSERT INTO users(username, display_name, email, password_hash)
         VALUES($1, $2, $3, $4)
-        RETURNING avatar_path, id
+        RETURNING avatar_path, id, username
         "#,
         form.username,
         form.display_name.unwrap_or_else(|| "User".to_string()),

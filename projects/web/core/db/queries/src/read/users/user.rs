@@ -64,7 +64,7 @@ pub async fn check_user_auth(
     pool: PgPool,
 ) -> Result<SessionUserInfo, ApiErrorCode> {
     let response = sqlx::query!(
-        "SELECT avatar_path, password_hash, id FROM users WHERE username = $1",
+        "SELECT avatar_path, password_hash, id, username FROM users WHERE username = $1",
         form.username,
     ).fetch_one(&pool).await;
 
@@ -87,6 +87,7 @@ pub async fn check_user_auth(
         Ok(_) => Ok(SessionUserInfo {
             id: user_info.id,
             avatar_path: user_info.avatar_path,
+            username: user_info.username,
         }),
         Err(err) => Err(ApiErrorCode::Password(PasswordError::PasswordFailedToVerify { reason: err.to_string() })),
     }
@@ -95,7 +96,7 @@ pub async fn check_user_auth(
 pub async fn fetch_user_info_for_auth(id: i32, pool: PgPool) -> Result<SessionUserInfo, ApiErrorCode> {
    let query = sqlx::query_as!(
        SessionUserInfo,
-       "SELECT id, avatar_path FROM users WHERE id = $1",
+       "SELECT id, avatar_path, username FROM users WHERE id = $1",
        id,
    ).fetch_one(&pool).await;
 

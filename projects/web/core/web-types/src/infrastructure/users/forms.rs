@@ -24,6 +24,7 @@ pub struct CreateUserResponse { pub id: i32 }
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SessionUserInfo {
     pub id: i32,
+    pub username: String,
     pub avatar_path: Option<String>,
 
 }
