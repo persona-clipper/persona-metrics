@@ -5,10 +5,10 @@ pub enum CpuQuery {
 }
 
 impl ToRawQuery for CpuQuery {
-    fn to_metricql(&self) -> String {
+    fn to_promql(&self) -> String {
         match self {
             CpuQuery::CpuUsage { host } => {
-                format!("cpu_usage{{host='{}'}}", host)
+                format!("metrics_cpu_global_cpu_usage{{hostname='{}'}}", host)
             }
         }
     }

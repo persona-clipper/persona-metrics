@@ -2,6 +2,7 @@ pub mod metrics;
 
 use serde_json::json;
 use url::Url;
+use crate::model::types::metrics::metric::{MetricQuery, ToRawQuery};
 
 pub struct VictoriaMetrics {
     pub client: reqwest::Client,
@@ -70,24 +71,40 @@ impl VictoriaMetrics {
     {
         let url = self.url.join("api/v1/query_range")?;
 
+        let start_str = start.to_string();
+        let end_str = start.to_string();
+
         let query = [
             ("query", query),
             ("step", step),
-        ];
-        let timestamp = [
-            ("start", start),
-            ("end", end),
+            ("start", start_str.as_str()),
+            ("end", end_str.as_str()),
         ];
 
         let json_response = self.client
             .get(url.to_string())
             .query(&query)
-            .query(&timestamp)
             .send()
             .await?
             .json::<serde_json::Value>()
             .await?;
 
         Ok(json_response)
+    }
+
+    pub async fn query(&self, query: MetricQuery, step: &str,) -> Result<serde_json::Value, Box<dyn std::error::Error>>{
+        let raw_query = query.to_promql();
+
+        let result = self.raw_query(&raw_query, step).await?;
+
+        Ok(result)
+    }
+
+    pub async fn query_range(&self, query: MetricQuery, start: i64, end: i64, step: &str) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+        let raw_query = query.to_promql();
+
+        let result = self.raw_query_range(&raw_query, start, end, step).await?;
+
+        Ok(result)
     }
 }
