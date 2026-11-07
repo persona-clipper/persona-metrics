@@ -1,39 +1,12 @@
-pub mod metrics;
-
-use serde_json::json;
 use url::Url;
-use crate::model::types::metrics::metric::{MetricQuery, ToRawQuery};
+use crate::types::metrics_query::{MetricQuery, ToRawQuery};
 
-pub struct VictoriaMetrics {
+pub struct VictoriaClient {
     pub client: reqwest::Client,
     pub url: url::Url,
 }
 
-/// В секундах
-pub struct Step(pub i32);
-
-pub enum StepRange {
-    Seconds,
-    Minutes,
-    Hours,
-}
-
-impl StepRange {
-    pub fn to_str(&self) -> &'static str {
-        match &self {
-            StepRange::Seconds => "s",
-            StepRange::Minutes => "m",
-            StepRange::Hours => "h",
-        }
-    }
-}
-impl Step {
-    pub fn to_metrics_step(&self, range: StepRange) -> String {
-        format!("{}{}", self.0, range.to_str())
-    }
-}
-
-impl VictoriaMetrics {
+impl VictoriaClient {
     pub fn new(url: Url) -> Self {
         Self {
             client: reqwest::Client::new(),
@@ -92,18 +65,20 @@ impl VictoriaMetrics {
         Ok(json_response)
     }
 
-    pub async fn query(&self, query: MetricQuery, step: &str,) -> Result<serde_json::Value, Box<dyn std::error::Error>>{
-        let raw_query = query.to_promql();
+    pub async fn query(&self, query: MetricQuery, step: &str, buffer: &mut String) -> Result<serde_json::Value, Box<dyn std::error::Error>>{
+        buffer.clear();
+        query.to_promql(buffer);
 
-        let result = self.raw_query(&raw_query, step).await?;
+        let result = self.raw_query(&buffer, step).await?;
 
         Ok(result)
     }
 
-    pub async fn query_range(&self, query: MetricQuery, start: i64, end: i64, step: &str) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
-        let raw_query = query.to_promql();
+    pub async fn query_range(&self, query: MetricQuery, start: i64, end: i64, step: &str, buffer: &mut String) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+        buffer.clear();
+        query.to_promql(buffer);
 
-        let result = self.raw_query_range(&raw_query, start, end, step).await?;
+        let result = self.raw_query_range(buffer, start, end, step).await?;
 
         Ok(result)
     }
