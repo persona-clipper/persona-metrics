@@ -3,7 +3,7 @@ use crate::queries::cpu::CpuQuery;
 use crate::queries::memory::MemoryQuery;
 use crate::queries::processes::ProcessListQuery;
 
-pub trait ToRawQuery {
+pub(crate) trait ToRawQuery {
     fn to_promql(&self, buffer: &mut String);
 }
 
@@ -14,11 +14,11 @@ pub enum MetricQuery {
 }
 
 impl ToRawQuery for MetricQuery {
-    fn to_promql(&self, mut buffer: &mut String) {
+    fn to_promql(&self, buffer: &mut String) {
         match self {
-            MetricQuery::Cpu(query) => query.to_promql(&mut buffer),
-            MetricQuery::Memory(query) => query.to_promql(&mut buffer),
-            MetricQuery::ProcessList(query) => query.to_promql(&mut buffer),
+            MetricQuery::Cpu(query) => query.to_promql(buffer),
+            MetricQuery::Memory(query) => query.to_promql(buffer),
+            MetricQuery::ProcessList(query) => query.to_promql(buffer),
         }
     }
 }

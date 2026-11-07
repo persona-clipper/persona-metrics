@@ -16,7 +16,7 @@ pub struct VmData<T> {
 }
 
 /// Used for parsing the response from VictoriaMetrics when **resultType** is *vector*
-/// 
+///
 /// # Example:
 /// ```json
 /// "metric": {
@@ -30,7 +30,7 @@ pub struct VmData<T> {
 ///     "0"
 /// ]
 ///```
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct VmVectorItem {
     pub metric: HashMap<String, String>,
     pub value: (i64, String),
@@ -58,6 +58,7 @@ pub struct VmVectorItem {
 ///     ...
 ///  ]
 ///```
+#[derive(Serialize, Deserialize)]
 pub struct VmMatrixItem {
     pub metric: HashMap<String, String>,
     pub value: Vec<(i64, String)>,

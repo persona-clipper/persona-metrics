@@ -1,5 +1,11 @@
 pub struct Step(pub i32);
 
+impl Default for Step {
+    fn default() -> Self {
+        Self(10)
+    }
+}
+
 pub enum StepRange {
     Seconds,
     Minutes,
@@ -15,6 +21,7 @@ impl StepRange {
         }
     }
 }
+
 impl Step {
     pub fn to_metrics_step(&self, range: StepRange) -> String {
         format!("{}{}", self.0, range.to_str())
