@@ -5,10 +5,10 @@ use axum::response::{IntoResponse, Redirect};
 use serde::Serialize;
 use tower_sessions::Session;
 use tracing::instrument::WithSubscriber;
+use core_library_db_queries::model::sessions::context::SessionContext;
 use core_library_db_types::store::users::password::Password;
 use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
-use crate::infrastructure::sessions::context::SessionContext;
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
@@ -71,7 +71,7 @@ pub async fn auth_user_handler(
 pub async fn get_form(
     session: SessionContext,
     State(state): State<AppState>,
-) -> impl IntoResponse  {
+) -> impl IntoResponse {
     let message = session.message.clone();
     let _ = session.session.remove_value("message").await;
     View {

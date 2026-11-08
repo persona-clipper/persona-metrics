@@ -8,3 +8,7 @@ pub async fn create_database() -> PgPool {
 
     PgPool::connect(&url).await.expect("Cant connect to database")
 }
+
+pub async fn create_session_layer() {
+
+}

@@ -47,3 +47,10 @@ pub async fn auth_handler(
     }
 }
 
+// pub async fn get_organizations(
+//     Path(user_id): Path<i32>,
+//     State(state): State<AppState>,
+// ) -> Result<(StatusCode, Json<>), ApiErrorCode> {
+// 
+// }
+// 

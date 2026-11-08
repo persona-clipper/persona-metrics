@@ -36,6 +36,21 @@ pub struct CreateUserRow {
     pub email: Option<String>,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct CreateOrganization {
+    pub name: String,
+    pub display_name: String,
+    pub description: String,
+}
+
+// #[derive(Serialize, Deserialize)]
+// pub struct OrganizationsUserListItem {
+//     pub name: String,
+//     pub description: String,
+//     pub server_count: i32,
+//     pub user_role: String,
+// }
+//
 pub struct User(String);
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

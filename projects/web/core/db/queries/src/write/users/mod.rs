@@ -4,7 +4,7 @@ use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use sqlx::PgPool;
 use core_library_db_types::store::users::password::Password;
-use core_library_db_types::store::users::user::CreateUserRow;
+use core_library_db_types::store::users::user::{CreateOrganization, CreateUserRow};
 use core_web_types::infrastructure::users::forms::{CreateUserResponse, RegistrationUserForm, SessionUserInfo};
 
 pub async fn insert_user_query(
@@ -23,4 +23,26 @@ pub async fn insert_user_query(
         form.email,
         form.password_hash
     ).fetch_one(&db).await
+}
+
+pub async fn insert_organization(
+    form: CreateOrganization,
+    user_id: i32,
+    db: PgPool,
+) -> Result<(), sqlx::Error> {
+
+
+
+    sqlx::query!(
+        r#"
+        INSERT INTO organizations(display_name, description, owner_user_id)
+        VALUES($1, $2, $3);
+        "#,
+        form.name,
+        form.description,
+        user_id,
+    ).execute(&db).await?;
+
+    Ok(())
+
 }

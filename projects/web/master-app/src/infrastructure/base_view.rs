@@ -4,7 +4,7 @@ use axum::http::{Response, StatusCode};
 use axum::response::{Html, IntoResponse};
 use smart_default::SmartDefault;
 use sqlx::Decode;
-use crate::infrastructure::sessions::context::SessionContext;
+use core_library_db_queries::model::sessions::context::SessionContext;
 
 #[derive(SmartDefault, Debug)]
 pub struct Flags {

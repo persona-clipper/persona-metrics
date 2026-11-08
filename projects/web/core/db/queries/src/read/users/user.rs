@@ -113,3 +113,15 @@ pub async fn fetch_user_info_for_auth(id: i32, pool: PgPool) -> Result<SessionUs
     }
 }
 
+// pub async fn fetch_user_organization_by_id(
+//     id: i32,
+//     pool: PgPool
+// ) -> Result<Vec<OrganizationsUserListItem>, ApiErrorCode> {
+//    let query = sqlx::query_as!(
+//        OrganizationsUserListItem,
+//        r#"
+//         SELECT
+//         "#
+//    ).fetch_all(&pool).await;
+// }
+//

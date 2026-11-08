@@ -9,5 +9,6 @@ pub fn api_v1() -> Router<AppState> {
         .route("/", get(|| async { "This is API V1" }))
         .route("/users/{id}", get(users::get_by_id_handler))
         .route("/users/auth", post(users::auth_handler))
+        // .route("/users/{id}/organizations")
         .route("/metrics/cpu/{hostname}", get(metrics::global_cpu_usage))
 }

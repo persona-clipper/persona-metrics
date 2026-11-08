@@ -884,6 +884,9 @@ dependencies = [
  "serde",
  "serde_json",
  "sqlx",
+ "tower-sessions",
+ "tracing",
+ "tracing-subscriber",
  "web-types",
 ]
 

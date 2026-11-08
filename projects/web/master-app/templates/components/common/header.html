@@ -1,10 +1,64 @@
-<div id="header">
-    <p>гандонка</p>
-<!--    <pre>{{ format_args!("{:#?}", self) }}</pre>-->
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
 
-    {% if let Some(ochko) = meta.session %}
-        {% if let Some(user_info) = ochko.user %}
-            <h1>{{ user_info.username }}</h1>
-        {% endif %}
-    {% endif %}
+            <!-- Левая сторона: Логотип и Главное меню -->
+            <div class="flex items-center gap-8">
+                <!-- Логотип -->
+                <a href="/" class="flex items-center space-x-2 text-xl font-bold text-gray-900 tracking-tight">
+                    <span class="bg-indigo-600 text-white p-2 rounded-lg text-sm font-black shadow-sm">⚡</span>
+                    <span>Persona<span class="text-indigo-600">.rs</span></span>
+                </a>
+
+                <!-- Навигация (всегда видимая) -->
+                <nav class="flex items-center gap-6 text-sm font-medium text-gray-600">
+                    <a href="/dashboard" class="text-indigo-600 transition-colors">Дашборд</a>
+                    <a href="/sessions" class="hover:text-gray-900 transition-colors">Сессии</a>
+                    <a href="/analytics" class="hover:text-gray-900 transition-colors">Аналитика</a>
+                </nav>
+            </div>
+
+            <!-- Правая сторона: Профиль / Кнопки авторизации -->
+            <div class="flex items-center gap-4">
+
+                <!-- Проверка сессии через Askama -->
+                {% if let Some(session) = meta.session %}
+                {% if let Some(user_info) = session.user %}
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400">Авторизован</p>
+                        <h1 class="text-sm font-medium text-gray-700">{{ user_info.username }}</h1>
+                    </div>
+                    <!-- Заглушка аватара -->
+                    <div class="h-9 w-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm shadow-inner ring-2 ring-indigo-500/10">
+                        {{ user_info.username.chars().next().unwrap_or('U') }}
+                    </div>
+                    <a href="/logout" class="ml-2 text-xs font-semibold text-gray-500 hover:text-red-600 border border-gray-200 rounded-md px-2.5 py-1.5 hover:bg-red-50 transition-all">
+                        Выйти нах
+                    </a>
+                </div>
+                {% else %}
+                <!-- Состояние, если сессия есть, но юзер не залогинен -->
+                <div class="flex items-center gap-4">
+                    <a href="/login" class="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">Войти</a>
+                    <a href="/signup" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-all">Регистрация</a>
+                </div>
+                {% endif %}
+                {% else %}
+                <!-- Состояние, если сессии вообще нет -->
+                <div class="flex items-center gap-4">
+                    <a href="/login" class="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">Войти</a>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</header>
+
+<!-- Ваш тестовый блок дебага, если понадобится раскомментировать -->
+<div id="header" class="hidden">
+    <p>гандонка</p>
+    <!-- <pre>{{ format_args!("{:#?}", self) }}</pre> -->
 </div>
