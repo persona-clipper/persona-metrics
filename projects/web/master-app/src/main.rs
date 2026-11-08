@@ -1,11 +1,12 @@
 use axum::Router;
 use axum::routing::get;
-use master_app::infrastructure::layers::{init_session_layer};
+use master_app::infrastructure::layers::{init_session_store, init_test_session_layer};
 use master_app::infrastructure::routes::app_router;
 use master_app::interface::handlers::main_page::{get_main_page_handler, get_physic_ball};
 use master_app::interface::handlers::users::registration::{create_user_handler, get_form};
 use tower_http::services::ServeDir;
 use tower_sessions::SessionManager;
+use core_library_db_queries::db::create_database;
 use master_app::infrastructure::states::AppState;
 
 #[tokio::main]
@@ -19,7 +20,8 @@ async fn main() {
 
     let state = AppState::default();
 
-    let session = init_session_layer();
+    let db_pool = create_database().await;
+    let session = init_session_store(db_pool.clone()).await;
     let app = app_router(state, session);
 
     // let app = Router::new()

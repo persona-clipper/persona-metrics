@@ -3,9 +3,10 @@ use axum::body::Body;
 use axum::http::{Response, StatusCode};
 use axum::response::{Html, IntoResponse};
 use smart_default::SmartDefault;
-use crate::infrastructure::session::SessionContext;
+use sqlx::Decode;
+use crate::infrastructure::sessions::context::SessionContext;
 
-#[derive(SmartDefault)]
+#[derive(SmartDefault, Debug)]
 pub struct Flags {
     #[default = true]
     pub show_header: bool,
@@ -15,7 +16,7 @@ pub struct Flags {
     pub show_sidebar: bool,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct PageMeta<'a> {
     pub title: &'a str,
     pub description: Option<&'a str>,
@@ -23,7 +24,7 @@ pub struct PageMeta<'a> {
     pub session: Option<SessionContext>,
 }
 
-#[derive(Template)]
+#[derive(Template, Debug)]
 #[template(path = "base.html")]
 pub struct BasePage<'a> {
     pub meta: PageMeta<'a>,

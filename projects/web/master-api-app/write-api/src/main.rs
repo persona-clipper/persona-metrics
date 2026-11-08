@@ -15,10 +15,8 @@ async fn main() {
         .without_time()
         .init();
 
-    let db_url = env::var("DATABASE_URL").expect("Failed to get env var `DATABASE_URL`");
-    let db_connection = create_database(&db_url).await.map_err(|e| {
-        tracing::error!("Failed to connect db. Error: {}", e);
-    }).unwrap();
+    // let db_url = env::var("DATABASE_URL").expect("Failed to get env var `DATABASE_URL`");
+    let db_connection = create_database().await;
 
     let state = AppState {
         db: db_connection,

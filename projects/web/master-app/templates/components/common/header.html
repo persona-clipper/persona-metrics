@@ -1,3 +1,10 @@
 <div id="header">
+    <p>гандонка</p>
+<!--    <pre>{{ format_args!("{:#?}", self) }}</pre>-->
 
+    {% if let Some(ochko) = meta.session %}
+        {% if let Some(user_info) = ochko.user %}
+            <h1>{{ user_info.username }}</h1>
+        {% endif %}
+    {% endif %}
 </div>

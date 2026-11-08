@@ -9,7 +9,7 @@ use tower_sessions::Session;
 use core_library_db_types::store::users::password::{Password, PasswordError};
 use core_library_db_types::store::users::user::{User, UserError};
 use core_web_types::infrastructure::users::forms::{CreateUserResponse, RegistrationUserForm, SessionUserInfo};
-use crate::infrastructure::session::SessionContext;
+use crate::infrastructure::sessions::context::SessionContext;
 
 #[derive(Template)]
 #[template(path = "pages/users/registration.html")]

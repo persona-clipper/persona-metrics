@@ -30,12 +30,12 @@ where
         let user: Option<SessionUserInfo> = session
             .get("user")
             .await
-            .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `user` from session".into()))?;
+            .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `user` from sessions".into()))?;
 
         let message: Option<String> = session
             .get("message")
             .await
-            .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `message` from session".into()))?;
+            .map_err(|_| (http::StatusCode::NOT_FOUND, "Failed to get `message` from sessions".into()))?;
 
         tracing::debug!("Session: {:#?}", session);
         Ok(Self {

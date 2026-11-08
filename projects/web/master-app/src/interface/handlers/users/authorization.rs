@@ -8,7 +8,7 @@ use tracing::instrument::WithSubscriber;
 use core_library_db_types::store::users::password::Password;
 use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, SessionUserInfo};
 use crate::infrastructure::base_view::{Flags, PageMeta, View};
-use crate::infrastructure::session::SessionContext;
+use crate::infrastructure::sessions::context::SessionContext;
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
