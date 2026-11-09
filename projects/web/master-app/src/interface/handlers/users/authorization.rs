@@ -25,7 +25,7 @@ pub async fn auth_user_handler(
 ) -> Redirect {
     tracing::info!("{:#?}", form);
 
-    let url = match state.api.read_url.join("v1/users/auth") {
+    let url = match state.api.read.url.join("v1/users/auth") {
         Ok(url) => url,
         Err(_) => {
             return Redirect::to("/signup")

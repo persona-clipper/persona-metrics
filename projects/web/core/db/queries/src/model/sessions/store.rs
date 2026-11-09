@@ -1,7 +1,6 @@
-use std::fmt::Write;
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
-use sqlx::{Executor, PgPool, SqlSafeStr};
+use serde::Serialize;
+use sqlx::PgPool;
 use tower_sessions::session::{Id, Record};
 use tower_sessions::{ExpiredDeletion, SessionStore};
 

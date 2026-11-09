@@ -54,7 +54,7 @@ pub async fn create_user_handler(
         return Redirect::to("/signup")
     }
 
-    let url = match state.api.write_url.join("v1/users") {
+    let url = match state.api.write.url.join("v1/users") {
         Ok(url) => url,
         Err(_) => {
             return Redirect::to("/signup")

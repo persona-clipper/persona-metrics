@@ -1,7 +1,9 @@
 @import "tailwindcss";
-
 @import "./main.css";
 @import "./components/footer.css";
-@import "./components/header.css";
 @import "./components/sidebar.css";
+@import "./components/header.css";
 @import "./components/auth.css";
+
+@source "../../../templates/**/*.html";
+

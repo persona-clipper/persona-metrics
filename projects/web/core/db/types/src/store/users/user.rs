@@ -36,11 +36,11 @@ pub struct CreateUserRow {
     pub email: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct CreateOrganization {
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CreateOrganizationForm {
     pub name: String,
     pub display_name: String,
-    pub description: String,
+    pub description: Option<String>,
 }
 
 // #[derive(Serialize, Deserialize)]

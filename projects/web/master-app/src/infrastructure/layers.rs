@@ -4,7 +4,7 @@ use axum::Router;
 use sqlx::PgPool;
 use tower_sessions::{Expiry, MemoryStore, SessionManagerLayer};
 use tower_sessions::cookie::time::SignedDuration;
-use crate::infrastructure::sessions::store::PostgresStore;
+use core_library_db_queries::model::sessions::store::PostgresStore;
 
 pub fn init_test_session_layer() -> SessionManagerLayer<MemoryStore> {
     let session_store = MemoryStore::default();

@@ -4,7 +4,7 @@ use axum::routing::get;
 use sqlx::PgPool;
 use api_write_side::api::v1::api_v1;
 use api_write_side::state::AppState;
-use core_library_db_queries::db::create_database;
+use core_library_db_queries::db::{create_database, create_session_layer};
 
 #[tokio::main]
 async fn main() {

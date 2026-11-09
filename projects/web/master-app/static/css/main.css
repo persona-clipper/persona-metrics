@@ -4,12 +4,12 @@
     --second-accent-color: #EB4C00;
     --secondary-color: #474747;
 }
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
 
 html, body {
     height: 100%;
@@ -20,13 +20,14 @@ html, body {
 }
 
 .signup-container {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    @apply w-full min-h-dvh flex justify-center items-center flex-col p-5
+    /*width: 100%;*/
+    /*min-height: 100vh;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+    /*padding: 20px;*/
 }
 
 .signup-form {
@@ -85,10 +86,11 @@ html, body {
 }
 
 .signup-form p {
-    opacity: 0.5;
-    color: var(--secondary-color);
-    font-size: 12px;
-    padding: 5px 0;
+    @apply opacity-50 text-xs py-1.25 text-[var(--secondary-color)]
+    /*opacity: 0.5;*/
+    /*color: var(--secondary-color);*/
+    /*font-size: 12px;*/
+    /*padding: 5px 0;*/
 }
 /* Кнопка отправки формы */
 .signup-form button[type="submit"] {
@@ -114,14 +116,11 @@ html, body {
 
 /* Ссылка под кнопкой (например, "Войти") */
 .signup-form .login-link {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    color: var(--secondary-color);
-}
-
-.auth-header-info p {
-    margin-bottom: 10px;
+    @apply text-center mt-2.5 text-sm text-(--secondary-color)
+    /*text-align: center;*/
+    /*margin-top: 10px;*/
+    /*font-size: 14px;*/
+    /*color: var(--secondary-color);*/
 }
 
 .signup-form .login-link a {

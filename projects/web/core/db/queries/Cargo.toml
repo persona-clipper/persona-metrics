@@ -19,3 +19,10 @@ tracing-subscriber = { workspace = true }
 argon2 = { workspace = true }
 password-hash = { workspace = true }
 rand_core = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true }
+rmp-serde = { workspace = true }
+
+jsonwebtoken = { workspace = true }
+headers = { workspace = true }
+axum-extra = { workspace = true }

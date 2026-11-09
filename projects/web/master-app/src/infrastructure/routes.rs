@@ -1,6 +1,7 @@
 use crate::infrastructure::states::AppState;
 use crate::interface::handlers::main_page::{get_main_page_handler, get_physic_ball};
 use crate::interface::handlers::users::*;
+use crate::interface::handlers::organizations;
 use axum::Router;
 use axum::extract::Request;
 use axum::middleware::Next;
@@ -17,6 +18,7 @@ pub fn app_router<T: SessionStore + Clone>(
     // Роуты доступнеы только пользователям с аккаунтом
     let private_routes = Router::new()
         .route("/logout", get(model::logout_handler))
+        .route("/organizations", get(organizations::get_create_form).post(organizations::create_organization_handler))
         .route_layer(axum::middleware::from_fn(require_auth));
 
     Router::new()

@@ -22,10 +22,9 @@ compact_str = { workspace = true }
 smart-default = { workspace = true }
 dotenvy = { workspace = true }
 async-trait = { workspace = true }
+jsonwebtoken = { workspace = true }
 
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 serde = { workspace = true }
 chrono = { workspace = true }
-
-rmp-serde = "1.3.1"
