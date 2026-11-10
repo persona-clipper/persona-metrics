@@ -76,7 +76,7 @@ pub async fn get_form(
     let _ = session.session.remove_value("message").await;
     View {
         meta: PageMeta {
-            title: "Авторизация",
+            title: "Авторизация".into(),
             flags: Flags {
                 show_sidebar: false,
                 show_header: false,

@@ -94,7 +94,7 @@ pub async fn get_form(
     let _ = session.session.remove_value("message").await;
     View {
         meta: PageMeta {
-            title: "Регистрация",
+            title: "Регистрация".into(),
             description: Some("Страница регистрации"),
             flags: Flags {
                 show_header: false,

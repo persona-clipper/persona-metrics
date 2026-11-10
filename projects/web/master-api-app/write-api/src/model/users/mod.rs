@@ -7,7 +7,7 @@ use tracing::error_span;
 use core_library_db_queries::model::json_token::context::AuthClaims;
 use core_library_db_queries::model::sessions::context::SessionContext;
 use core_library_db_queries::read::users::user::check_user_auth;
-use core_library_db_queries::write::users::{insert_organization, insert_user_query};
+use core_library_db_queries::write::users::{insert_user_query};
 use core_library_db_types::error::{ApiErrorCode, ApiErrorResponse};
 use core_library_db_types::store::users::password::{Password, PasswordError};
 use core_library_db_types::store::users::user::{CreateOrganizationForm, CreateUserRow};
@@ -48,21 +48,4 @@ pub async fn create_user_handler(
     }
 }
 
-pub async fn create_organization_handler(
-    claims: AuthClaims,
-    State(state): State<AppState>,
-    Json(payload): Json<CreateOrganizationForm>,
-) -> Result<StatusCode, ApiErrorCode> {
 
-    tracing::info!("{:#?}", payload);
-    tracing::info!("{:#?}", claims);
-    match insert_organization(&payload, claims.0.sub, state.db.clone()).await {
-        Ok(()) => {
-            Ok(StatusCode::CREATED)
-        },
-        Err(err) => {
-            tracing::error!("{:#?}", err.to_string());
-            Err(ApiErrorCode::Other { reason: err.to_string() })
-        }
-    }
-}

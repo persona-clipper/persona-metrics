@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use askama::Template;
 use axum::body::Body;
 use axum::http::{Response, StatusCode};
@@ -18,7 +19,7 @@ pub struct Flags {
 
 #[derive(Default, Debug)]
 pub struct PageMeta<'a> {
-    pub title: &'a str,
+    pub title: Cow<'a, str>,
     pub description: Option<&'a str>,
     pub flags: Flags,
     pub session: Option<SessionContext>,

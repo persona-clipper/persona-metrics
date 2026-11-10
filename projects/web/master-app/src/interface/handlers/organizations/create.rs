@@ -10,6 +10,7 @@ use core_library_db_queries::model::json_token::context::Claims;
 use core_library_db_queries::model::sessions::context::SessionContext;
 use core_library_db_types::store::users::user::CreateOrganizationForm;
 use crate::infrastructure::base_view::{PageMeta, View};
+use crate::infrastructure::json_web_tokens::generate_json_web_token;
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
@@ -22,39 +23,27 @@ pub async fn create_organization_handler(
     Form(payload): Form<CreateOrganizationForm>,
 ) -> Redirect {
     if let Some(user_info) = session.user {
-        let expiry = SystemTime::now().duration_since(UNIX_EPOCH).expect("Failed to get system time").as_secs();
-        let claims = Claims {
-            sub: user_info.id,
-            username: user_info.username,
-            // К текущему времени прибавляем 800 секунд, это будет время когда токен истечет
-            exp: expiry + 800,
-        };
-        let secret = EncodingKey::from_secret(&state.api.write.jwt_secret_token.into_bytes());
-        let claims = jsonwebtoken::encode(
-            &Header::default(),
-            &claims,
-            &secret
-        ).expect("");
+        let claims = generate_json_web_token(&user_info, state.api.write.jwt_secret_token.clone());
+        if let Ok(claims) = claims {
+            let target_url = state.api.write.url.join("v1/users/orgs").expect("Failed to parse url");
 
-        let target_url = state.api.write.url.join("v1/users/orgs").expect("Failed to parse url");
+            let response = state.http_client
+                .post(target_url)
+                .json(&payload)
+                .bearer_auth(&claims)
+                .send()
+                .await;
 
-        let response = state.http_client
-            .post(target_url)
-            .json(&payload)
-            .bearer_auth(&claims)
-            .send()
-            .await;
+            match response {
+                Ok(val) => {
 
-        match response {
-            Ok(val) => {
+                }
+                Err(err) => {
 
-            }
-            Err(err) => {
-
+                }
             }
         }
     }
-
     Redirect::to("/")
 }
 
@@ -63,7 +52,7 @@ pub async fn get_create_form(
 ) -> impl IntoResponse {
     View {
         meta: PageMeta {
-            title: "Создание организации",
+            title: "Создание организации".into(),
             description: None,
             flags: Default::default(),
             session: Some(session.clone()),

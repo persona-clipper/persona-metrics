@@ -11,7 +11,7 @@ pub async fn get_main_page_handler(
 ) -> impl IntoResponse {
     View {
         meta: PageMeta {
-            title: "Главная страница",
+            title: "Главная страница".into(),
             description: Some("Главная страница проекта Persona Metrics"),
             session: Some(session.clone()),
             ..Default::default()
