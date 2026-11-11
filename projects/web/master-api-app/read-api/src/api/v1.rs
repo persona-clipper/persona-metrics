@@ -8,7 +8,9 @@ use crate::state::AppState;
 pub fn api_v1() -> Router<AppState> {
     Router::new()
         .route("/", get(|| async { "This is API V1" }))
-        .route("/users/{id}", get(users::get_by_id_handler))
+        .route("/me/orgs", get(users::get_organizations))
+        .route("/me/profile", get(users::get_by_id_handler))
+        // .route("/users/{id}", get(users::get_by_id_handler))
         .route("/users/auth", post(users::auth_handler))
         .route("/users/{id}/orgs", get(users::get_organizations))
         // .route("/users/{id}/organizations")

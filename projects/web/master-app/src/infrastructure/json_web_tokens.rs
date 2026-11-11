@@ -1,6 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 use askama::filters::json;
 use jsonwebtoken::{encode, EncodingKey, Header};
+use serde::Serialize;
 use core_library_db_queries::model::json_token::context::Claims;
 use core_web_types::infrastructure::users::forms::SessionUserInfo;
 

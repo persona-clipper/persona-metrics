@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  
-</body>
-</html>
+<div class="organizations">
+
+    {% for item in items %}
+        <p>{{ item.display_name }}</p>
+        {% if let Some(description) = item.description %}
+            <p>{{ description }}</p>
+        {% endif %}
+    {% endfor %}
+
+</div>

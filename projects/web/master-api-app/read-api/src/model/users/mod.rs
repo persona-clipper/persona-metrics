@@ -20,10 +20,10 @@ use crate::state::AppState;
 /// Вызовет ошибку если пользователь не найден 
 /// или база данных не приняла запрос
 pub async fn get_by_id_handler(
-    Path(id): Path<i32>,
+    claims: AuthClaims,
     State(state): State<AppState>,
 ) -> Result<(StatusCode, Json<GetUserRow>), ApiErrorCode> {
-    let user = match get_user_by_id(id, state.db.clone()).await {
+    let user = match get_user_by_id(claims.0.sub, state.db.clone()).await {
         Ok(user) => user,
         Err(sqlx::Error::RowNotFound) => {
             return Err(ApiErrorCode::User(UserError::UserNotFound));

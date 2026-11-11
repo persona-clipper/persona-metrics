@@ -12,8 +12,10 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Claims {
+    /// `id` пользователя
     pub sub: i32,
     pub username: String,
+    /// Срок жизни JWT токена
     pub exp: u64,
 }
 

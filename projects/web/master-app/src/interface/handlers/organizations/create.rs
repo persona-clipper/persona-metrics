@@ -25,7 +25,7 @@ pub async fn create_organization_handler(
     if let Some(user_info) = session.user {
         let claims = generate_json_web_token(&user_info, state.api.write.jwt_secret_token.clone());
         if let Ok(claims) = claims {
-            let target_url = state.api.write.url.join("v1/users/orgs").expect("Failed to parse url");
+            let target_url = state.api.write.url.join("api/v1/users/orgs").expect("Failed to parse url");
 
             let response = state.http_client
                 .post(target_url)

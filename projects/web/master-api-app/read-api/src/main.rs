@@ -21,8 +21,8 @@ async fn main() {
 
     let router = Router::new()
         .route("/", get(get_api_info))
-        .nest("/v1/", api_v1())
-        .nest("/v2/", api_v2())
+        .nest("/api/v1/", api_v1())
+        .nest("/api/v2/", api_v2())
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:1313").await.unwrap();

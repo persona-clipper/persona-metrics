@@ -23,7 +23,7 @@ async fn main() {
     };
 
     let router = Router::new()
-        .route("/", get(|| async { "Hello, Write API" }))
+        .route("/api/", get(|| async { "Hello, Write API" }))
         .nest("/v1/", api_v1())
         .with_state(state);
 

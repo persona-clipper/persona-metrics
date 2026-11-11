@@ -10,6 +10,7 @@ use axum::routing::get;
 use tower_http::services::ServeDir;
 use tower_sessions::{SessionManagerLayer, SessionStore};
 use core_library_db_queries::model::sessions::context::SessionContext;
+use crate::interface::handlers::common::not_found_handler;
 
 pub fn app_router<T: SessionStore + Clone>(
     state: AppState,
@@ -31,6 +32,7 @@ pub fn app_router<T: SessionStore + Clone>(
         .nest_service("/static", ServeDir::new("static"))
         .with_state(state)
         .layer(session)
+        .fallback(not_found_handler)
 }
 
 pub async fn require_auth(
