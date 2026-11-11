@@ -22,5 +22,5 @@ pub async fn init_session_store(pool: PgPool) -> SessionManagerLayer<PostgresSto
 
     SessionManagerLayer::new(session_store)
         .with_secure(false)
-        .with_expiry(Expiry::OnInactivity(SignedDuration::new(3600, 0)))
+        .with_expiry(Expiry::OnInactivity(SignedDuration::new(86400, 0)))
 }

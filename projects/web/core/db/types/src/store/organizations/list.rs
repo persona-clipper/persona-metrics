@@ -3,6 +3,7 @@ use sqlx::FromRow;
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct OrganizationListItem {
+    pub unique_hash_id: String,
     pub display_name: String,
     pub description: Option<String>,
     pub role: String,

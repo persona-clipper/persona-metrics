@@ -38,7 +38,6 @@ pub struct CreateUserRow {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateOrganizationForm {
-    pub name: String,
     pub display_name: String,
     pub description: Option<String>,
 }

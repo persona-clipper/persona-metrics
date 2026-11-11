@@ -14,8 +14,8 @@ pub async fn create(
     Json(payload): Json<CreateOrganizationForm>,
 ) -> Result<(StatusCode, Json<i32>), ApiErrorCode> {
 
-    tracing::info!("{:#?}", payload);
-    tracing::info!("{:#?}", claims);
+    tracing::debug!("{:#?}", payload);
+    tracing::debug!("{:#?}", claims);
     match insert_organization(&payload, claims.0.sub, state.db.clone()).await {
         Ok(id) => {
             Ok((StatusCode::CREATED, Json(id)))

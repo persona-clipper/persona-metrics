@@ -26,3 +26,5 @@ rmp-serde = { workspace = true }
 jsonwebtoken = { workspace = true }
 headers = { workspace = true }
 axum-extra = { workspace = true }
+rand = { workspace = true }
+hex = { workspace = true }

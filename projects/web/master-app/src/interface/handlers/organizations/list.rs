@@ -1,10 +1,10 @@
+use std::default;
 use askama::Template;
-use askama_web::__askama_web_impl::axum_core_0_5::IntoResponse;
 use axum::extract::State;
 use axum::response::Redirect;
 use core_library_db_queries::model::sessions::context::SessionContext;
 use core_library_db_types::store::organizations::list::OrganizationListItem;
-use crate::infrastructure::base_view::{PageMeta, View};
+use crate::infrastructure::base_view::{Flags, PageMeta, View};
 use crate::infrastructure::json_web_tokens::generate_json_web_token;
 use crate::infrastructure::states::AppState;
 
@@ -18,15 +18,6 @@ pub async fn get_page<'a>(
     session: SessionContext,
     State(state): State<AppState>,
 ) -> Result<View<'a, OrganizationListView>, Redirect> {
-
-    // if let Some(user_info) = session.user {
-    //     if let Ok(jwt) = generate_json_web_token(&user_info, state.api.read.jwt_secret_token) {
-    //         if let Ok(url) = state.api.read.url.join("api/v1/me/orgs") {
-
-    //         }
-    //     }
-    // }
-
     let user_info = session.user
         .as_ref()
         .ok_or_else(|| {
@@ -51,15 +42,18 @@ pub async fn get_page<'a>(
         .await
         .expect("Failed to get data from API");
 
-    tracing::info!("{:#?}", response);
+    tracing::debug!("{:#?}", response);
     let organization_list = response.json::<Vec<OrganizationListItem>>().await.unwrap_or_default();
 
-    tracing::info!("{:#?}", organization_list);
+    tracing::debug!("{:#?}", organization_list);
     let view = View {
         meta: PageMeta {
             title: format!("Организации {}", user_info.username).into(),
             description: None,
-            flags: Default::default(),
+            flags: Flags {
+                show_sidebar: false,
+                ..Default::default()
+            },
             session: Some(session.clone()),
         },
         template: OrganizationListView {

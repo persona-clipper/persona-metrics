@@ -22,7 +22,7 @@ pub async fn create_user_handler(
     State(state): State<AppState>,
     Form(form): Form<RegistrationUserForm>,
 ) -> Redirect {
-    tracing::info!("{:#?}", form);
+    tracing::debug!("{:#?}", form);
     let _ = session.session.remove_value("message").await;
 
     if let Err(err) = Password::new(&form.password).check(&form.password_confirm) {

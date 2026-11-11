@@ -1,6 +1,7 @@
 use sqlx::PgPool;
 use core_library_db_types::store::organizations::list::OrganizationListItem;
 use core_library_db_types::store::users::user::CreateOrganizationForm;
+use crate::model::common::generate_random_hash;
 
 pub async fn insert_organization(
     form: &CreateOrganizationForm,
@@ -9,13 +10,14 @@ pub async fn insert_organization(
 ) -> Result<i32, sqlx::Error> {
     let mut tx = db.begin().await?;
 
+    let unique_hash_id = generate_random_hash(8);
     let organization_response = sqlx::query!(
         r#"
-        INSERT INTO organizations(unique_name, display_name, description, owner_user_id)
+        INSERT INTO organizations(unique_hash_id, display_name, description, owner_user_id)
         VALUES($1, $2, $3, $4)
         RETURNING id, owner_user_id;
         "#,
-        form.name,
+        unique_hash_id,
         form.display_name,
         form.description,
         user_id,
@@ -54,6 +56,7 @@ pub async fn get_organizations_by_user_id(
         OrganizationListItem,
         r#"
         SELECT
+            organizations.unique_hash_id,
             organizations.display_name,
             organizations.description,
             organization_roles.name AS role

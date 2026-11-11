@@ -14,7 +14,7 @@ use crate::infrastructure::json_web_tokens::generate_json_web_token;
 use crate::infrastructure::states::AppState;
 
 #[derive(Template)]
-#[template(path = "pages/organizations/create_organization.html")]
+#[template(path = "pages/organizations/create.html")]
 pub struct CreateOrganizationFormView;
 
 pub async fn create_organization_handler(
@@ -33,18 +33,10 @@ pub async fn create_organization_handler(
                 .bearer_auth(&claims)
                 .send()
                 .await;
-
-            match response {
-                Ok(val) => {
-
-                }
-                Err(err) => {
-
-                }
-            }
+            tracing::debug!("{:#?}", response);
         }
     }
-    Redirect::to("/")
+    Redirect::to("/organizations")
 }
 
 pub async fn get_create_form(

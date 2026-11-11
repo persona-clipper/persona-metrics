@@ -5,13 +5,10 @@ use axum::{Form, Json};
 use axum::response::IntoResponse;
 use tracing::error_span;
 use core_library_db_queries::model::json_token::context::AuthClaims;
-use core_library_db_queries::model::sessions::context::SessionContext;
-use core_library_db_queries::read::users::user::check_user_auth;
 use core_library_db_queries::write::users::{insert_user_query};
 use core_library_db_types::error::{ApiErrorCode, ApiErrorResponse};
 use core_library_db_types::store::users::password::{Password, PasswordError};
 use core_library_db_types::store::users::user::{CreateOrganizationForm, CreateUserRow};
-use core_library_db_types::store::users::user::UserError::UserFailAuth;
 use core_web_types::infrastructure::users::forms::{AuthorizationUserForm, CreateUserResponse, RegistrationUserForm, SessionUserInfo};
 use crate::state::{AppState};
 
