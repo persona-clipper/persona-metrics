@@ -1,6 +1,7 @@
 use askama::Template;
 use askama_web::__askama_web_impl::axum_core_0_5::IntoResponse;
 use axum::extract::State;
+use axum::response::Redirect;
 use core_library_db_queries::model::sessions::context::SessionContext;
 use core_library_db_types::store::organizations::list::OrganizationListItem;
 use crate::infrastructure::base_view::{PageMeta, View};
@@ -13,13 +14,36 @@ pub struct OrganizationListView {
     pub items: Vec<OrganizationListItem>,
 }
 
-pub async fn get_page(
+pub async fn get_page<'a>(
     session: SessionContext,
     State(state): State<AppState>,
-) -> impl IntoResponse {
+) -> Result<View<'a, OrganizationListView>, Redirect> {
 
-    let target_url = state.api.read.url.join("api/v1/me/orgs").unwrap();
-    let jwt = generate_json_web_token(&session.clone().user.unwrap(), state.api.read.jwt_secret_token).unwrap();
+    // if let Some(user_info) = session.user {
+    //     if let Ok(jwt) = generate_json_web_token(&user_info, state.api.read.jwt_secret_token) {
+    //         if let Ok(url) = state.api.read.url.join("api/v1/me/orgs") {
+
+    //         }
+    //     }
+    // }
+
+    let user_info = session.user
+        .as_ref()
+        .ok_or_else(|| {
+            tracing::error!("Failed to get user info from sessions");
+            Redirect::to("/")
+        })?;
+    let target_url = state.api.read.url.join("api/v1/me/orgs")
+        .map_err(|e| {
+            tracing::error!("Failed to parse target URL. Error: {}", e);
+            Redirect::to("/")
+        })?;
+    let jwt = generate_json_web_token(user_info, state.api.read.jwt_secret_token)
+        .map_err(|e| {
+            tracing::error!("Failed to generate JWT token. Error: {}", e);
+            Redirect::to("/")
+        })?;
+
     let response = state.http_client
         .get(target_url)
         .bearer_auth(jwt)
@@ -31,9 +55,9 @@ pub async fn get_page(
     let organization_list = response.json::<Vec<OrganizationListItem>>().await.unwrap_or_default();
 
     tracing::info!("{:#?}", organization_list);
-    View {
+    let view = View {
         meta: PageMeta {
-            title: format!("Организации {}", session.clone().user.unwrap().username).into(),
+            title: format!("Организации {}", user_info.username).into(),
             description: None,
             flags: Default::default(),
             session: Some(session.clone()),
@@ -41,5 +65,7 @@ pub async fn get_page(
         template: OrganizationListView {
             items: organization_list,
         },
-    }
+    };
+
+    Ok(view)
 }
