@@ -21,7 +21,9 @@ async fn main() {
     let state = AppState::default();
 
     let db_pool = create_database().await;
+
     let session = init_session_store(db_pool.clone()).await;
+
     let app = app_router(state, session);
 
     // let app = Router::new()

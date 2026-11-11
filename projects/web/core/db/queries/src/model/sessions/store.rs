@@ -1,3 +1,4 @@
+use std::time::Duration;
 use async_trait::async_trait;
 use serde::Serialize;
 use sqlx::PgPool;
@@ -154,4 +155,8 @@ impl ExpiredDeletion for PostgresStore {
 
         Ok(())
     }
+
+    // async fn continuously_delete_expired(self, period: Duration) -> tower_sessions::session_store::Result<()> {
+    //     todo!()
+    // }
 }

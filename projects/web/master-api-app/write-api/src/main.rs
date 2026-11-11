@@ -23,8 +23,8 @@ async fn main() {
     };
 
     let router = Router::new()
-        .route("/api/", get(|| async { "Hello, Write API" }))
-        .nest("/v1/", api_v1())
+        .route("/", get(|| async { "Hello, Write API" }))
+        .nest("/api/v1/", api_v1())
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:1212").await.unwrap();

@@ -12,13 +12,13 @@ pub async fn create(
     claims: AuthClaims,
     State(state): State<AppState>,
     Json(payload): Json<CreateOrganizationForm>,
-) -> Result<StatusCode, ApiErrorCode> {
+) -> Result<(StatusCode, Json<i32>), ApiErrorCode> {
 
     tracing::info!("{:#?}", payload);
     tracing::info!("{:#?}", claims);
     match insert_organization(&payload, claims.0.sub, state.db.clone()).await {
-        Ok(()) => {
-            Ok(StatusCode::CREATED)
+        Ok(id) => {
+            Ok((StatusCode::CREATED, Json(id)))
         },
         Err(err) => {
             tracing::error!("{:#?}", err.to_string());

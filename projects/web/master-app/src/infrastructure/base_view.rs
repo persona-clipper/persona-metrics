@@ -39,7 +39,6 @@ pub struct View<'a, T: Template> {
 
 impl<T: Template> IntoResponse for View<'_, T> {
     fn into_response(self) -> Response<Body> {
-
         let content = match self.template.render() {
             Ok(html) => html,
             Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
