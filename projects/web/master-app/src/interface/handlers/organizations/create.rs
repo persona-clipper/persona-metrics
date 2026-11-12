@@ -36,7 +36,7 @@ pub async fn create_organization_handler(
             tracing::debug!("{:#?}", response);
         }
     }
-    Redirect::to("/organizations")
+    Redirect::to("/orgs")
 }
 
 pub async fn get_create_form(

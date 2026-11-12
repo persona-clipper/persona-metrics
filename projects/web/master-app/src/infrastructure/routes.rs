@@ -19,9 +19,10 @@ pub fn app_router<T: SessionStore + Clone>(
     // Роуты доступнеы только пользователям с аккаунтом
     let private_routes = Router::new()
         .route("/logout", get(model::logout_handler))
-        .route("/organizations/create", get(organizations::get_create_form))
-        .route("/organizations", get(organizations::get_page).post(organizations::create_organization_handler))
-        .route("/organizations/{unique_id}", get(organizations::current::get_page))
+        .route("/orgs/new", get(organizations::get_create_form))
+        .route("/orgs", get(organizations::get_page).post(organizations::create_organization_handler))
+        .route("/orgs/{unique_id}", get(organizations::current::get_page))
+        .route("/orgs/{unique_id}/servers", get(organizations::servers::get_overview_page))
         .route_layer(axum::middleware::from_fn(require_auth));
 
     Router::new()

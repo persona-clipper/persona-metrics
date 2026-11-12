@@ -1,4 +1,4 @@
-<a href="/organizations/create" class="p-2 bg-gray-400 shadow">Создать организацию</a>
+<a href="/orgs/new" class="p-2 bg-gray-400 shadow">Создать организацию</a>
 
 <div class="organizations">
     {% for item in items %}
@@ -7,7 +7,7 @@
             {% if let Some(description) = item.description %}
                 <p class="text-gray-600 mt-2">{{ description }}</p>
             {% endif %}
-            <a href="/organizations/{{ item.unique_hash_id }}">Перейти</a>
+            <a href="/orgs/{{ item.unique_hash_id }}">Перейти</a>
         </div>
     {% endfor %}
 </div>

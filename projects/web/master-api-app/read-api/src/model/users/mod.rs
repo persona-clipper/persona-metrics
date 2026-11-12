@@ -4,9 +4,10 @@ use axum::http::StatusCode;
 use axum::Json;
 use axum::response::IntoResponse;
 use serde_json::json;
+use sqlx::PgPool;
 use core_library_db_queries::model::json_token::context::AuthClaims;
+use core_library_db_queries::read::organizations::get_organizations_by_user_id;
 use core_library_db_queries::read::users::user::{check_user_auth, get_user_by_id};
-use core_library_db_queries::write::organizations::get_organizations_by_user_id;
 use core_library_db_types::error::{ApiErrorCode, ApiErrorResponse};
 use core_library_db_types::store::organizations::list::OrganizationListItem;
 use core_library_db_types::store::users::user::{GetUserRow, UserError};
@@ -49,18 +50,3 @@ pub async fn auth_handler(
         },
     }
 }
-
-pub async fn get_organizations(
-    claims: AuthClaims,
-    State(state): State<AppState>,
-) -> Result<(StatusCode, Json<Vec<OrganizationListItem>>), ApiErrorCode> {
-    match get_organizations_by_user_id(claims.0.sub, state.db.clone()).await {
-        Ok(val) => {
-            Ok((StatusCode::OK, Json(val)))
-        },
-        Err(err) => {
-            Err(ApiErrorCode::Other { reason: err.to_string() })
-        }
-    }
-}
-
