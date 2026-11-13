@@ -48,7 +48,7 @@ tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 
 # Web-server & network
-axum = { version = "0.8.9", features = ["multipart", "ws"] }
+axum = { version = "0.8.9", features = ["multipart", "ws", "macros"] }
 axum-extra = { version = "0.12.6", features = ["typed-header"] }
 
 headers = { version = "0.4.2"}
